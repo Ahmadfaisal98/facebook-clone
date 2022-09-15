@@ -1,4 +1,5 @@
 import User from '../models/User';
+import bcrypt from 'bcrypt';
 
 export const register = async (req, res) => {
   try {
@@ -14,11 +15,13 @@ export const register = async (req, res) => {
       gender,
     } = req.body;
 
+    const cryptedPassword = await bcrypt.hash(password, 12);
+
     const user = await new User({
       first_name,
       last_name,
       email,
-      password,
+      password: cryptedPassword,
       username,
       bYear,
       bMonth,

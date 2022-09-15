@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import uniqueValidator from 'mongoose-unique-validator';
 
 const { ObjectId } = mongoose.Schema;
 
@@ -9,12 +10,16 @@ const userSchema = mongoose.Schema(
       required: [true, 'first name is required'],
       trim: true,
       text: true,
+      minLength: [3, 'first_name must between 3 and 30 characters'],
+      maxLength: [30, 'first_name must between 3 and 30 characters'],
     },
     last_name: {
       type: String,
       required: [true, 'last name is required'],
       trim: true,
       text: true,
+      minLength: [3, 'first_name must between 3 and 30 characters'],
+      maxLength: [30, 'first_name must between 3 and 30 characters'],
     },
     username: {
       type: String,
@@ -38,6 +43,8 @@ const userSchema = mongoose.Schema(
     password: {
       type: String,
       required: [true, 'password is required'],
+      minLength: [6, 'first_name must between 6 and 30 characters'],
+      maxLength: [30, 'first_name must between 6 and 30 characters'],
     },
     picture: {
       type: String,
@@ -147,4 +154,7 @@ const userSchema = mongoose.Schema(
     timestamps: true,
   }
 );
+
+userSchema.plugin(uniqueValidator);
+
 export default mongoose.model('User', userSchema);
