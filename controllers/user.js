@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import { validateLength, validateUsername } from '../helpers/validation';
 import { generateToken } from '../helpers/tokens';
 import { sendVerificationEmail } from '../helpers/mailer';
+import jwt from 'jsonwebtoken';
 
 export const register = async (req, res) => {
   try {
@@ -66,4 +67,19 @@ export const register = async (req, res) => {
     }
     res.status(500).json({ message: err.message });
   }
+};
+
+export const activateAccount = async (req, res) => {
+  const { token } = req.body;
+  const user = jwt.verify(token, process.env.JWT_TOKEN);
+
+  const check = await User.findById(user.id);
+  if (check.verified == true) {
+    return res.status(400).json({ message: 'This email is already activated' });
+  }
+
+  await User.findByIdAndUpdate(user.id, { verified: true });
+  return res
+    .status(200)
+    .json({ message: 'Account has been activated successfully' });
 };
