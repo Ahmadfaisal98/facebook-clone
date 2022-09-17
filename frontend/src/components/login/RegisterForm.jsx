@@ -3,6 +3,8 @@ import { useState } from 'react';
 import * as Yup from 'yup';
 
 import RegisterInput from '../inputs/registerInput';
+import DateOfBirthSelect from './DateOfBirthSelect';
+import GenderSelect from './GenderSelect';
 
 export default function RegisterForm() {
   const userInfos = {
@@ -31,6 +33,7 @@ export default function RegisterForm() {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
   };
+
   const years = Array.from(new Array(108), (val, index) => ({
     year: yearTemp - index,
     key: index,
@@ -44,10 +47,7 @@ export default function RegisterForm() {
     day: 1 + index,
     key: index,
   }));
-  const toMonthName = (month) => {
-    const date = new Date(bYear, month, 0);
-    return date.toLocaleString('default', { month: 'short' });
-  };
+
   const registerValidation = Yup.object({
     first_name: Yup.string()
       .required("What's your First name ?")
@@ -130,78 +130,21 @@ export default function RegisterForm() {
                 <div className='register_line_header'>
                   Date of birth <i className='info_icon'></i>
                 </div>
-                <div className='register_grid'>
-                  <select
-                    name='bDay'
-                    value={bDay}
-                    onChange={handleRegisterChange}
-                  >
-                    {days.map(({ day, key }) => (
-                      <option value={day} key={key}>
-                        {day}
-                      </option>
-                    ))}
-                  </select>
-                  <select
-                    name='bMonth'
-                    value={bMonth}
-                    onChange={handleRegisterChange}
-                  >
-                    {months.map(({ month, key }) => (
-                      <option value={month} key={key}>
-                        {toMonthName(month)}
-                      </option>
-                    ))}
-                  </select>
-                  <select
-                    name='bYear'
-                    value={bYear}
-                    onChange={handleRegisterChange}
-                  >
-                    {years.map(({ year, key }) => (
-                      <option value={year} key={key}>
-                        {year}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                <DateOfBirthSelect
+                  bDay={bDay}
+                  bMonth={bMonth}
+                  bYear={bYear}
+                  days={days}
+                  months={months}
+                  years={years}
+                  handleRegisterChange={handleRegisterChange}
+                />
               </div>
               <div className='register_col'>
                 <div className='register_line_header'>
                   Gender <i className='info_icon'></i>
                 </div>
-                <div className='register_grid'>
-                  <label htmlFor='male'>
-                    <span>Male</span>
-                    <input
-                      type='radio'
-                      name='gender'
-                      id='male'
-                      value='male'
-                      onChange={handleRegisterChange}
-                    />
-                  </label>
-                  <label htmlFor='female'>
-                    <span>Female</span>
-                    <input
-                      type='radio'
-                      name='gender'
-                      id='female'
-                      value='female'
-                      onChange={handleRegisterChange}
-                    />
-                  </label>
-                  <label htmlFor='custom'>
-                    <span>Custom</span>
-                    <input
-                      type='radio'
-                      name='gender'
-                      id='custom'
-                      value='custom'
-                      onChange={handleRegisterChange}
-                    />
-                  </label>
-                </div>
+                <GenderSelect handleRegisterChange={handleRegisterChange} />
               </div>
               <div className='register_infos'>
                 By clicking Sign Up, you agree to our{' '}
