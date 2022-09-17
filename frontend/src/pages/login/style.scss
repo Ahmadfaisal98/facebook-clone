@@ -220,6 +220,19 @@
   .login_footer_wrap {
     max-width: 520px;
   }
+  .register {
+    width: 400px;
+    &_line {
+      flex-direction: row;
+    }
+    &_grid select,
+    &_grid label {
+      width: 110px;
+    }
+    &_grid .input_error {
+      width: 350px;
+    }
+  }
 }
 @media (min-width: 650px) {
   .login_footer_wrap {
