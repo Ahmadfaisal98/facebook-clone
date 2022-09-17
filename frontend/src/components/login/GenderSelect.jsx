@@ -1,8 +1,16 @@
+import { useMediaQuery } from 'react-responsive';
+
 export default function GenderSelect({ handleRegisterChange, genderError }) {
+  const large = useMediaQuery({
+    query: '(min-width: 1170px)',
+  });
   return (
-    <div className='register_grid'>
+    <div
+      className='register_grid'
+      style={{ marginBottom: `${genderError && !large ? '70px' : '0'}` }}
+    >
       <label htmlFor='male'>
-        <span>Male</span>
+        Male
         <input
           type='radio'
           name='gender'
@@ -12,7 +20,7 @@ export default function GenderSelect({ handleRegisterChange, genderError }) {
         />
       </label>
       <label htmlFor='female'>
-        <span>Female</span>
+        Female
         <input
           type='radio'
           name='gender'
@@ -22,7 +30,7 @@ export default function GenderSelect({ handleRegisterChange, genderError }) {
         />
       </label>
       <label htmlFor='custom'>
-        <span>Custom</span>
+        Custom
         <input
           type='radio'
           name='gender'
@@ -31,6 +39,18 @@ export default function GenderSelect({ handleRegisterChange, genderError }) {
           onChange={handleRegisterChange}
         />
       </label>
+      {genderError && (
+        <div
+          className={
+            !large ? 'input_error' : 'input_error input_error_select_large'
+          }
+        >
+          <div
+            className={!large ? 'error_arrow_bottom' : 'error_arrow_left'}
+          ></div>
+          {genderError}
+        </div>
+      )}
     </div>
   );
 }
