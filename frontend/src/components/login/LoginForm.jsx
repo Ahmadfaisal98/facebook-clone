@@ -3,7 +3,7 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { Link } from 'react-router-dom';
 
-import LoginInput from '../../components/inputs/loginInput';
+import LoginInput from '../inputs/loginInput';
 
 export default function LoginForm() {
   const [login, setLogin] = useState({
