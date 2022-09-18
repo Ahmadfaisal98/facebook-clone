@@ -25,6 +25,14 @@ export const register = async (req, res) => {
       });
     }
 
+    const check = await User.findOne({ email });
+    if (check) {
+      return res.status(400).json({
+        message:
+          'This email address already exists,try with a different email address',
+      });
+    }
+
     const cryptedPassword = await bcrypt.hash(password, 12);
 
     const tempUsername = first_name + last_name;
@@ -108,6 +116,28 @@ export const login = async (req, res) => {
         .status(400)
         .json({ message: 'Invalid credentials. Please try again!' });
     }
+    if (!user.verified) {
+      return res.status(400).json({
+        message: 'Your account still unverified. Please verified your account',
+      });
+    }
+
+    const token = await generateToken({ id: user._id.toString() }, '7d');
+
+    return res.status(200).json({
+      message: 'Login successful',
+      user: {
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email,
+        bYear: user.bYear,
+        bMonth: user.bMonth,
+        bDay: user.bDay,
+        gender: user.gender,
+        token,
+      },
+      status: 200,
+    });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
