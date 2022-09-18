@@ -8,7 +8,7 @@ import DateOfBirthSelect from './DateOfBirthSelect';
 import GenderSelect from './GenderSelect';
 import { useRegisterMutation } from '../../services/serverApi';
 
-export default function RegisterForm() {
+export default function RegisterForm({ setVisible }) {
   const [user, setUser] = useState({
     first_name: '',
     last_name: '',
@@ -117,7 +117,7 @@ export default function RegisterForm() {
     <div className='blur'>
       <div className='register' id='register'>
         <div className='register_header'>
-          <i className='exit_icon'></i>
+          <i className='exit_icon' onClick={() => setVisible(false)}></i>
           <span>Sign Up</span>
           <span>It's quick and easy</span>
         </div>
