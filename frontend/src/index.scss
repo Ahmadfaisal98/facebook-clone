@@ -66,3 +66,12 @@ a {
   left: 0;
   background: rgba(255, 255, 255, 0.768);
 }
+
+/*----error and success styles -------*/
+.error_text {
+  color: #b94a48;
+}
+.success_text {
+  color: var(--green-color);
+}
+/*----error and success styles -------*/

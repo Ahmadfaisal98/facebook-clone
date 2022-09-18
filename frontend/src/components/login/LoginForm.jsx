@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 import LoginInput from '../inputs/loginInput';
+import { useLoginMutation } from '../../services/serverApi';
+import { setToLogin } from '../../features/userSlice';
 
 export default function LoginForm({ setVisible }) {
   const [login, setLogin] = useState({
@@ -11,10 +14,11 @@ export default function LoginForm({ setVisible }) {
     password: '',
   });
   const { email, password } = login;
-  const handleLoginChange = (e) => {
-    const { name, value } = e.target;
-    setLogin({ ...login, [name]: value });
-  };
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [postLogin, { error, isError, isLoading }] = useLoginMutation();
+
   const loginValidation = Yup.object({
     email: Yup.string()
       .required('Email address is required.')
@@ -22,6 +26,20 @@ export default function LoginForm({ setVisible }) {
       .max(100),
     password: Yup.string().required('Password is required'),
   });
+
+  const handleLoginChange = (e) => {
+    const { name, value } = e.target;
+    setLogin({ ...login, [name]: value });
+  };
+
+  const handleSubmit = async () => {
+    const result = await postLogin(login);
+    if (result.data.status === 200) {
+      localStorage.setItem('token', result.data.user.token);
+      dispatch(setToLogin({ token: result.data.user.token }));
+      navigate('/');
+    }
+  };
 
   return (
     <div className='login_wrap'>
@@ -40,6 +58,7 @@ export default function LoginForm({ setVisible }) {
               password,
             }}
             validationSchema={loginValidation}
+            onSubmit={handleSubmit}
           >
             {(formik) => (
               <Form>
@@ -65,6 +84,7 @@ export default function LoginForm({ setVisible }) {
           <Link to='/forgot' className='forgot_password'>
             Forgotten password?
           </Link>
+          {isError && <div className='error_text'>{error.data.message}</div>}
           <div className='sign_splitter'></div>
           <button
             className='blue_btn open_signup'

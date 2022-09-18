@@ -11,7 +11,14 @@ export const serverApi = createApi({
         body,
       }),
     }),
+    login: builder.mutation({
+      query: (body) => ({
+        url: `/user/login`,
+        method: 'POST',
+        body,
+      }),
+    }),
   }),
 });
 
-export const { useRegisterMutation } = serverApi;
+export const { useRegisterMutation, useLoginMutation } = serverApi;
