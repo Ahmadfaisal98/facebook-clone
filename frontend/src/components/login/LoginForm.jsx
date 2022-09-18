@@ -3,6 +3,7 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import DotLoader from 'react-spinners/DotLoader';
 
 import LoginInput from '../inputs/loginInput';
 import { useLoginMutation } from '../../services/serverApi';
@@ -84,6 +85,7 @@ export default function LoginForm({ setVisible }) {
           <Link to='/forgot' className='forgot_password'>
             Forgotten password?
           </Link>
+          <DotLoader color='#1876f2' loading={isLoading} size={30} />
           {isError && <div className='error_text'>{error.data.message}</div>}
           <div className='sign_splitter'></div>
           <button
