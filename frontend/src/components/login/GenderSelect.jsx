@@ -1,13 +1,20 @@
 import { useMediaQuery } from 'react-responsive';
 
-export default function GenderSelect({ handleRegisterChange, genderError }) {
+export default function GenderSelect({
+  handleRegisterChange,
+  name,
+  genderError,
+}) {
   const large = useMediaQuery({
     query: '(min-width: 1170px)',
   });
   return (
     <div
+      key={name}
       className='register_grid'
-      style={{ marginBottom: `${genderError && !large ? '70px' : '0'}` }}
+      style={{
+        marginBottom: `${genderError && !large ? '70px' : '0'}`,
+      }}
     >
       <label htmlFor='male'>
         Male

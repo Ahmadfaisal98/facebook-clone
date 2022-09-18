@@ -25,6 +25,14 @@ export const register = async (req, res) => {
       });
     }
 
+    const check = await User.findOne({ email });
+    if (check) {
+      return res.status(400).json({
+        message:
+          'This email address already exists,try with a different email address',
+      });
+    }
+
     const cryptedPassword = await bcrypt.hash(password, 12);
 
     const tempUsername = first_name + last_name;

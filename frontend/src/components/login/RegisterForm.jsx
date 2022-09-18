@@ -1,11 +1,12 @@
-import { Form, Formik } from 'formik';
-import { useEffect } from 'react';
 import { useState } from 'react';
+import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
+import DotLoader from 'react-spinners/DotLoader';
 
 import RegisterInput from '../inputs/registerInput';
 import DateOfBirthSelect from './DateOfBirthSelect';
 import GenderSelect from './GenderSelect';
+import { useRegisterMutation } from '../../services/serverApi';
 
 export default function RegisterForm() {
   const [user, setUser] = useState({
@@ -20,7 +21,9 @@ export default function RegisterForm() {
   });
   const [dateError, setDateError] = useState('');
   const [genderError, setGenderError] = useState('');
-  const [height, setHeight] = useState(null);
+  const [postRegister, { error, isError, isSuccess, data, isLoading }] =
+    useRegisterMutation();
+
   const {
     first_name,
     last_name,
@@ -51,16 +54,6 @@ export default function RegisterForm() {
     key: index,
   }));
 
-  useEffect(() => {
-    function handleResize() {
-      const value = document.getElementById('login')?.offsetHeight;
-      setHeight(value);
-    }
-    window.addEventListener('resize', handleResize);
-    handleResize();
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
   const registerValidation = Yup.object({
     first_name: Yup.string()
       .required("What's your First name ?")
@@ -83,44 +76,42 @@ export default function RegisterForm() {
       )
       .min(6, 'Password must be at least 6 characters.')
       .max(36, "Password can't be more than 36 characters"),
-    bYear: Yup.string().test(`date`, `Validation failure message`, () => {
-      const current_date = new Date();
-      const picked_date = new Date(bYear, bMonth - 1, bDay);
-      const maxYear = new Date(
-        current_date.getFullYear() - 14,
-        current_date.getMonth(),
-        current_date.getDate()
-      );
-      const minYear = new Date(
-        current_date.getFullYear() - 70,
-        current_date.getMonth(),
-        current_date.getDate()
-      );
-
-      if (picked_date > maxYear) {
-        setDateError(
-          'It looks like you have entered the wrong info. Please make sure that you use your real date of birth.'
-        );
-      } else if (picked_date < minYear) {
-        setDateError(
-          'It looks like you have entered the wrong info. Please make sure that you use your real date of birth.'
-        );
-      } else {
-        setDateError('');
-      }
-    }),
-    gender: Yup.string().test(`gender`, `Validation failure message`, () => {
-      if (gender === '') {
-        setGenderError(
-          'Please choose a gender. You can change who can see this later.'
-        );
-      } else {
-        setGenderError('');
-      }
-    }),
   });
 
-  console.log(height);
+  const handleSubmit = () => {
+    const current_date = new Date();
+    const picked_date = new Date(bYear, bMonth - 1, bDay);
+    const maxYear = new Date(
+      current_date.getFullYear() - 14,
+      current_date.getMonth(),
+      current_date.getDate()
+    );
+    const minYear = new Date(
+      current_date.getFullYear() - 70,
+      current_date.getMonth(),
+      current_date.getDate()
+    );
+
+    if (picked_date > maxYear || picked_date < minYear) {
+      setDateError(
+        'It looks like you have entered the wrong info. Please make sure that you use your real date of birth.'
+      );
+    } else {
+      setDateError('');
+    }
+
+    if (!gender) {
+      setGenderError(
+        'Please choose a gender. You can change who can see this later.'
+      );
+    } else {
+      setGenderError('');
+    }
+
+    if (!dateError && !genderError) {
+      postRegister(user);
+    }
+  };
 
   return (
     <div className='blur'>
@@ -143,7 +134,7 @@ export default function RegisterForm() {
             gender,
           }}
           validationSchema={registerValidation}
-          // onSubmit={handleSubmit}
+          onSubmit={handleSubmit}
         >
           {(formik) => (
             <Form className='register_form'>
@@ -182,6 +173,7 @@ export default function RegisterForm() {
                   Date of birth <i className='info_icon'></i>
                 </div>
                 <DateOfBirthSelect
+                  name='bYear'
                   bDay={bDay}
                   bMonth={bMonth}
                   bYear={bYear}
@@ -197,8 +189,8 @@ export default function RegisterForm() {
                   Gender <i className='info_icon'></i>
                 </div>
                 <GenderSelect
-                  handleRegisterChange={handleRegisterChange}
                   genderError={genderError}
+                  handleRegisterChange={handleRegisterChange}
                 />
               </div>
               <div className='register_infos'>
@@ -212,6 +204,11 @@ export default function RegisterForm() {
                   Sign Up
                 </button>
               </div>
+              <DotLoader color='#1876f2' loading={isLoading} size={30} />
+              {isError && (
+                <div className='error_text'>{error.data.message}</div>
+              )}
+              {isSuccess && <div className='success_text'>{data.message}</div>}
             </Form>
           )}
         </Formik>

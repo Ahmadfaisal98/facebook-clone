@@ -14,6 +14,7 @@ export default function RegisterInput({ placeholder, bottom, ...props }) {
   });
   const largeFirstName = large && field.name === 'first_name';
   const largeLastName = large && field.name === 'last_name';
+
   return (
     <div className='input register_input'>
       <input

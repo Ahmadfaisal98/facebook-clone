@@ -22,7 +22,9 @@ export default function DateOfBirthSelect({
   return (
     <div
       className='register_grid'
-      style={{ marginBottom: `${dateError && !large ? '90px' : '0'}` }}
+      style={{
+        marginBottom: `${dateError && !large ? '90px' : '0'}`,
+      }}
     >
       <select name='bDay' value={bDay} onChange={handleRegisterChange}>
         {days.map(({ day, key }) => (
