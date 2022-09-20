@@ -446,6 +446,16 @@
 }
 /*-------User menu----*/
 
+/* Active header */
+.active_header {
+  background-color: var(--light-blue-color);
+  & svg {
+    fill: var(--blue-color);
+  }
+}
+
+/* Active header */
+
 /*---responsive----------*/
 @media (max-width: 1295px) {
   .header_middle .middle_icon {
