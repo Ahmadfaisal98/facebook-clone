@@ -17,6 +17,7 @@ import {
 import { useSelector } from 'react-redux';
 import SearchMenu from './SearchMenu';
 import AllMenu from './AllMenu';
+import UserMenu from './userMenu';
 
 import useClickOutside from '../../hooks/useClickOutside';
 import './style.scss';
@@ -25,10 +26,16 @@ export default function Header() {
   const user = useSelector((state) => state.user);
   const [showSearchMenu, setShowSearchMenu] = useState(false);
   const [showAllMenu, setShowAllMenu] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
 
   const allMenu = useRef(null);
+  const userMenu = useRef(null);
+
   useClickOutside(allMenu, () => {
     setShowAllMenu(false);
+  });
+  useClickOutside(userMenu, () => {
+    setShowUserMenu(false);
   });
 
   const color = '#65676b';
@@ -81,14 +88,15 @@ export default function Header() {
           <img src={user?.picture} alt='profile' />
           <span>{user?.first_name}</span>
         </Link>
-        <div
-          className='circle_icon hover1'
-          ref={allMenu}
-          onClick={() => {
-            setShowAllMenu((prev) => !prev);
-          }}
-        >
-          <Menu />
+        <div className='circle_icon hover1' ref={allMenu}>
+          <div
+            onClick={() => {
+              setShowAllMenu((prev) => !prev);
+            }}
+          >
+            <Menu />
+          </div>
+
           {showAllMenu && <AllMenu />}
         </div>
         <div className='circle_icon hover1'>
@@ -98,8 +106,15 @@ export default function Header() {
           <Notifications />
           <div className='right_notification'>5</div>
         </div>
-        <div className='circle_icon hover1'>
-          <ArrowDown />
+        <div className='circle_icon hover1' ref={userMenu}>
+          <div
+            onClick={() => {
+              setShowUserMenu((prev) => !prev);
+            }}
+          >
+            <ArrowDown />
+          </div>
+          {showUserMenu && <UserMenu user={user} />}
         </div>
       </div>
     </header>
