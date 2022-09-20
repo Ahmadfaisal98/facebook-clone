@@ -75,3 +75,49 @@ a {
   color: var(--green-color);
 }
 /*----error and success styles -------*/
+
+/*-----Hovers-----*/
+.hover1:hover {
+  background-color: var(--bg-secondary);
+}
+.hover2:hover {
+  background-color: var(--bg-third);
+}
+.hover3:hover {
+  background: #d4d6da3a;
+}
+/*-----Hovers-----*/
+
+/*----Scrollbar----*/
+.scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+.scrollbar::-webkit-scrollbar-thumb {
+  background: #aeaeafa1;
+  border-radius: 5px;
+}
+/*----Scrollbar----*/
+
+/*---Circles------*/
+.small_circle {
+  position: relative;
+  height: 36px;
+  width: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 11px;
+  background: var(--bg-third);
+  cursor: pointer;
+}
+.circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/*---Circles------*/

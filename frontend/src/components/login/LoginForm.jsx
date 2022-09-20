@@ -37,7 +37,7 @@ export default function LoginForm({ setVisible }) {
     const result = await postLogin(login);
     if (result.data.status === 200) {
       localStorage.setItem('token', result.data.user.token);
-      dispatch(setToLogin({ token: result.data.user.token }));
+      dispatch(setToLogin({ ...result.data.user }));
       navigate('/');
     }
   };
