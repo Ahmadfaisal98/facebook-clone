@@ -145,3 +145,7 @@ export const login = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+export const auth = async (req, res) => {
+  res.send('auth');
+};
