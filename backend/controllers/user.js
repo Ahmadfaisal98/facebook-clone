@@ -81,19 +81,23 @@ export const register = async (req, res) => {
 export const activateAccount = async (req, res) => {
   try {
     const { token } = req.body;
-    const user = jwt.verify(token, process.env.JWT_TOKEN);
+    const checkToken = jwt.verify(token, process.env.JWT_TOKEN);
 
-    const check = await User.findById(user.id);
-    if (check.verified == true) {
+    const user = await User.findById(checkToken.id);
+    if (!user) {
+      return res.status(400).json({ message: 'The email is not found' });
+    }
+    if (user.verified == true) {
       return res
         .status(400)
         .json({ message: 'This email is already activated' });
     }
 
     await User.findByIdAndUpdate(user.id, { verified: true });
-    return res
-      .status(200)
-      .json({ message: 'Account has been activated successfully' });
+    return res.status(200).json({
+      message: 'Account has been activated successfully',
+      user,
+    });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
