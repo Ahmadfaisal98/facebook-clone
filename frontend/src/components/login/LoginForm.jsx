@@ -7,7 +7,7 @@ import DotLoader from 'react-spinners/DotLoader';
 
 import LoginInput from '../inputs/loginInput';
 import { useLoginMutation } from '../../services/serverApi';
-import { setToLogin } from '../../features/userSlice';
+import { updateUser } from '../../features/userSlice';
 
 export default function LoginForm({ setVisible }) {
   const [login, setLogin] = useState({
@@ -37,7 +37,7 @@ export default function LoginForm({ setVisible }) {
     const result = await postLogin(login);
     if (result.data.status === 200) {
       localStorage.setItem('token', result.data.user.token);
-      dispatch(setToLogin({ ...result.data.user }));
+      dispatch(updateUser({ ...result.data.user }));
       navigate('/');
     }
   };
