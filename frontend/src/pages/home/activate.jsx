@@ -14,7 +14,6 @@ import './style.scss';
 
 export default function Activate() {
   const user = useSelector((state) => state.user);
-  const [loading, setLoading] = useState(true);
   const [postActivate, { error, isError, isSuccess, data, isLoading }] =
     useActivateMutation();
   const dispatch = useDispatch();
@@ -25,11 +24,11 @@ export default function Activate() {
   useEffect(() => {
     postActivate({ token }).then(({ data }) => {
       if (data.message === 'Account has been activated successfully') {
-        // setTimeout(() => {
-        //   dispatch(updateUser({ verified: true, token, ...data.user }));
-        //   localStorage.setItem('token', token);
-        //   navigate('/');
-        // }, 2000);
+        setTimeout(() => {
+          dispatch(updateUser({ ...data.user, verified: true, token }));
+          localStorage.setItem('token', token);
+          navigate('/');
+        }, 2000);
       }
     });
   }, []);
@@ -41,7 +40,7 @@ export default function Activate() {
           type='success'
           header='Account verification succeed.'
           text={data?.message}
-          loading={loading}
+          loading={isLoading}
         />
       )}
       {isError && (
@@ -49,7 +48,7 @@ export default function Activate() {
           type='error'
           header='Account verification failed.'
           text={error?.data?.message}
-          loading={loading}
+          loading={isLoading}
         />
       )}
       <Header />

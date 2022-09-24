@@ -10,12 +10,12 @@ function App() {
   return (
     <div>
       <Routes>
+        <Route path='/activate/:token' element={<Activate />} exact />
         <Route element={<LoggedInRoutes />}>
           <Route path='/profile' element={<Profile />} exact />
           <Route path='/' element={<Home />} exact />
         </Route>
         <Route element={<NotLoggedInRoutes />}>
-          <Route path='/activate/:token' element={<Activate />} exact />
           <Route path='/login' element={<Login />} exact />
         </Route>
       </Routes>

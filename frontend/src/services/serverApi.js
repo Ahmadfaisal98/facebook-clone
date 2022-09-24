@@ -34,8 +34,19 @@ export const serverApi = createApi({
         body,
       }),
     }),
+    sendVerification: builder.mutation({
+      query: (body) => ({
+        url: `/user/send-verification`,
+        method: 'POST',
+        body,
+      }),
+    }),
   }),
 });
 
-export const { useRegisterMutation, useLoginMutation, useActivateMutation } =
-  serverApi;
+export const {
+  useRegisterMutation,
+  useLoginMutation,
+  useActivateMutation,
+  useSendVerificationMutation,
+} = serverApi;

@@ -85,7 +85,7 @@ export const activateAccount = async (req, res) => {
 
     const user = await User.findById(checkToken.id);
     if (!user) {
-      return res.status(400).json({ message: 'The email is not found' });
+      return res.status(400).json({ message: 'The user is not found' });
     }
     if (user.verified == true) {
       return res
@@ -120,11 +120,11 @@ export const login = async (req, res) => {
         .status(400)
         .json({ message: 'Invalid credentials. Please try again!' });
     }
-    if (!user.verified) {
-      return res.status(400).json({
-        message: 'Your account still unverified. Please verified your account',
-      });
-    }
+    // if (!user.verified) {
+    //   return res.status(400).json({
+    //     message: 'Your account still unverified. Please verified your account',
+    //   });
+    // }
 
     const token = await generateToken({ id: user._id.toString() }, '7d');
 
@@ -152,4 +152,35 @@ export const login = async (req, res) => {
 
 export const auth = async (req, res) => {
   res.send('auth');
+};
+
+export const sendVerification = async (req, res) => {
+  try {
+    const id = req.user.id;
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(400).json({ message: 'The user is not found' });
+    }
+
+    if (user.verified === true) {
+      return res.status(400).json({
+        message: 'This account is already activated',
+      });
+    }
+
+    const emailVerificationToken = await generateToken(
+      { id: user._id.toString() },
+      '30m'
+    );
+
+    const url = `${process.env.BASE_URL}/activate/${emailVerificationToken}`;
+    sendVerificationEmail(user.email, user.first_name, url);
+
+    return res.status(200).json({
+      message: 'Email verification link has been sent to tour email',
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };
