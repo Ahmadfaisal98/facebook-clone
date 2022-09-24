@@ -226,7 +226,7 @@ export const validateResetCode = async (req, res) => {
     const { email, code } = req.body;
     const user = await User.findOne({ email });
     const codeDb = await Code.findOne({ user: user._id });
-    if (codeDb.code !== +code) {
+    if (codeDb.code !== code) {
       return res.status(400).json({
         message: 'Verification code is wrong..',
       });
