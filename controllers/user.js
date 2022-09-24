@@ -1,11 +1,11 @@
 import jwt from 'jsonwebtoken';
 
 import User from '../models/User';
+import Code from '../models/Code';
 import bcrypt from 'bcrypt';
 import { validateLength, validateUsername } from '../helpers/validation';
 import { generateToken } from '../helpers/tokens';
 import { sendResetCode, sendVerificationEmail } from '../helpers/mailer';
-import Code from '../models/Code';
 import generateCode from '../helpers/generateCode';
 
 export const register = async (req, res) => {
@@ -214,6 +214,7 @@ export const sendResetPasswordCode = async (req, res) => {
     sendResetCode(user.email, user.first_name, code);
     return res.status(200).json({
       message: 'Email reset code has been sent to your email',
+      status: 200,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
