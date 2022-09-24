@@ -13,21 +13,22 @@ const initialState = {
   bMonth: 0,
   bDay: 0,
   gender: '',
+  verified: false,
 };
 
 const userSlice = createSlice({
   name: 'userSlice',
   initialState,
   reducers: {
-    setToLogin(state, { payload }) {
+    updateUser(state, { payload }) {
       return { ...state, ...payload };
     },
-    resetUser() {
+    logout() {
       return { ...initialState, token: null };
     },
   },
 });
 
-export const { setToLogin, resetUser } = userSlice.actions;
+export const { updateUser, logout } = userSlice.actions;
 
 export default userSlice.reducer;
