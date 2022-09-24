@@ -120,11 +120,6 @@ export const login = async (req, res) => {
         .status(400)
         .json({ message: 'Invalid credentials. Please try again!' });
     }
-    // if (!user.verified) {
-    //   return res.status(400).json({
-    //     message: 'Your account still unverified. Please verified your account',
-    //   });
-    // }
 
     const token = await generateToken({ id: user._id.toString() }, '7d');
 
