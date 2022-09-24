@@ -23,12 +23,12 @@ const userSlice = createSlice({
     updateUser(state, { payload }) {
       return { ...state, ...payload };
     },
-    resetUser() {
+    logout() {
       return { ...initialState, token: null };
     },
   },
 });
 
-export const { updateUser, resetUser } = userSlice.actions;
+export const { updateUser, logout } = userSlice.actions;
 
 export default userSlice.reducer;
