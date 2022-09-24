@@ -4,7 +4,9 @@ import User from '../models/User';
 import bcrypt from 'bcrypt';
 import { validateLength, validateUsername } from '../helpers/validation';
 import { generateToken } from '../helpers/tokens';
-import { sendVerificationEmail } from '../helpers/mailer';
+import { sendResetCode, sendVerificationEmail } from '../helpers/mailer';
+import Code from '../models/Code';
+import generateCode from '../helpers/generateCode';
 
 export const register = async (req, res) => {
   try {
@@ -193,6 +195,25 @@ export const findUser = async (req, res) => {
       email: user.email,
       picture: user.picture,
       status: 200,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const sendResetPasswordCode = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email }).select('-password');
+    await Code.findOneAndRemove({ user: user._id });
+    const code = generateCode(5);
+    await new Code({
+      code,
+      user: user._id,
+    }).save();
+    sendResetCode(user.email, user.first_name, code);
+    return res.status(200).json({
+      message: 'Email reset code has been sent to your email',
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
