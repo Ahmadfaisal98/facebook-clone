@@ -1,4 +1,6 @@
+import { useSelector } from 'react-redux';
 import { Routes, Route } from 'react-router-dom';
+
 import Login from './pages/login';
 import Profile from './pages/profile';
 import Home from './pages/home';
@@ -6,10 +8,13 @@ import LoggedInRoutes from './routes/LoggedInRoutes';
 import NotLoggedInRoutes from './routes/NotLoggedInRoutes';
 import Activate from './pages/home/activate';
 import Reset from './pages/reset';
+import CreatePostPopup from './components/createPostPopup';
 
 function App() {
+  const user = useSelector((state) => state.user);
   return (
     <div>
+      <CreatePostPopup user={user} />
       <Routes>
         <Route path='/activate/:token' element={<Activate />} exact />
         <Route element={<LoggedInRoutes />}>
