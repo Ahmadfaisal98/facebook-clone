@@ -16,7 +16,7 @@ export default function Reset() {
   const navigate = useNavigate();
   const [visible, setVisible] = useState(0);
   const [email, setEmail] = useState('');
-  const { code, setCode } = useState('');
+  const [code, setCode] = useState('');
   const [password, setPassword] = useState('');
   const [conf_password, setConf_password] = useState('');
   const [userInfos, setUserInfos] = useState(null);
@@ -55,7 +55,9 @@ export default function Reset() {
             setUserInfos={setUserInfos}
           />
         )}
-        {visible === 1 && userInfos && <SendEmail userInfos={userInfos} />}
+        {visible === 1 && userInfos && (
+          <SendEmail userInfos={userInfos} setVisible={setVisible} />
+        )}
         {visible === 2 && (
           <CodeVerification user={user} code={code} setCode={setCode} />
         )}

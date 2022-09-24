@@ -48,6 +48,13 @@ export const serverApi = createApi({
         body,
       }),
     }),
+    sendResetCodeVerification: builder.mutation({
+      query: (body) => ({
+        url: `/user/send-reset-code-verification`,
+        method: 'POST',
+        body,
+      }),
+    }),
   }),
 });
 
@@ -57,4 +64,5 @@ export const {
   useActivateMutation,
   useSendVerificationMutation,
   useFindUserMutation,
+  useSendResetCodeVerificationMutation,
 } = serverApi;
