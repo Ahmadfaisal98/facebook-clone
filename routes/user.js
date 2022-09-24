@@ -7,6 +7,7 @@ import {
   sendVerification,
   findUser,
   sendResetPasswordCode,
+  validateResetCode,
 } from '../controllers/user';
 import { authUser } from '../middlewares/auth';
 
@@ -19,5 +20,6 @@ router.post('/send-verification', authUser, sendVerification);
 router.post('/auth', authUser, auth);
 router.post('/find-user', findUser);
 router.post('/send-reset-code-verification', sendResetPasswordCode);
+router.post('/validate-reset-code', validateResetCode);
 
 export default router;
