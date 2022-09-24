@@ -1,15 +1,19 @@
 import { Form, Formik } from 'formik';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import LoginInput from '../../components/inputs/loginInput';
+import { Link, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
+
+import LoginInput from '../../components/inputs/loginInput';
+import { useChangePasswordMutation } from '../../services/serverApi';
+
 export default function ChangePassword({
   password,
   setPassword,
   conf_password,
   setConf_password,
-  error,
+  userInfos,
 }) {
+  const [changePassword, { error, isError }] = useChangePasswordMutation();
+  const navigate = useNavigate();
   const validatePassword = Yup.object({
     password: Yup.string()
       .required(
@@ -22,6 +26,17 @@ export default function ChangePassword({
       .required('Confirm your password.')
       .oneOf([Yup.ref('password')], 'Passwords must match.'),
   });
+  const handleSubmit = async () => {
+    const { data } = await changePassword({
+      password,
+      confirmPassword: conf_password,
+      email: userInfos.email,
+    });
+
+    if (data.status === 200) {
+      navigate('/');
+    }
+  };
   return (
     <div className='reset_form' style={{ height: '310px' }}>
       <div className='reset_form_header'>Change Password</div>
@@ -33,6 +48,7 @@ export default function ChangePassword({
           conf_password,
         }}
         validationSchema={validatePassword}
+        onSubmit={handleSubmit}
       >
         {(formik) => (
           <Form>
@@ -49,7 +65,7 @@ export default function ChangePassword({
               placeholder='Confirm new password'
               bottom
             />
-            {error && <div className='error_text'>{error}</div>}
+            {isError && <div className='error_text'>{error.data.message}</div>}
             <div className='reset_form_btns'>
               <Link to='/login' className='gray_btn'>
                 Cancel

@@ -10,7 +10,7 @@ export default function CodeVerification({
   userInfos,
   setVisible,
 }) {
-  const [validateResetCode, { error, isError, isLoading }] =
+  const [validateResetCode, { error, isError }] =
     useValidateResetCodeMutation();
 
   const validateCode = Yup.object({

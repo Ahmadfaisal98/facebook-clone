@@ -72,6 +72,7 @@ export default function Reset() {
             conf_password={conf_password}
             setConf_password={setConf_password}
             setPassword={setPassword}
+            userInfos={userInfos}
           />
         )}
       </div>

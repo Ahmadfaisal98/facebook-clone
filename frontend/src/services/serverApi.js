@@ -62,6 +62,13 @@ export const serverApi = createApi({
         body,
       }),
     }),
+    changePassword: builder.mutation({
+      query: (body) => ({
+        url: `/user/change-password`,
+        method: 'POST',
+        body,
+      }),
+    }),
   }),
 });
 
@@ -73,4 +80,5 @@ export const {
   useFindUserMutation,
   useSendResetCodeVerificationMutation,
   useValidateResetCodeMutation,
+  useChangePasswordMutation,
 } = serverApi;
