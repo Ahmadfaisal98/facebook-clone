@@ -220,3 +220,19 @@ export const sendResetPasswordCode = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const validateResetCode = async (req, res) => {
+  try {
+    const { email, code } = req.body;
+    const user = await User.findOne({ email });
+    const codeDb = await Code.findOne({ user: user._id });
+    if (codeDb.code !== +code) {
+      return res.status(400).json({
+        message: 'Verification code is wrong..',
+      });
+    }
+    return res.status(200).json({ message: 'ok', status: 200 });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
