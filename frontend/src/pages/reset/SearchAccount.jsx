@@ -3,14 +3,32 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
 import LoginInput from '../../components/inputs/loginInput';
+import { useFindUserMutation } from '../../services/serverApi';
 
-export default function SearchAccount({ email, setEmail, error }) {
+export default function SearchAccount({
+  email,
+  setEmail,
+  setVisible,
+  setUserInfos,
+}) {
+  const [findUser, { isError, isLoading, error, data: dataUser }] =
+    useFindUserMutation();
+
   const validateEmail = Yup.object({
     email: Yup.string()
       .required('Email address ir required.')
       .email('Must be a valid email address.')
       .max(50, "Email address can't be more than 50 characters."),
   });
+
+  const handleSubmit = async () => {
+    const { data } = await findUser({ email });
+    if (data.status === 200) {
+      setUserInfos(data);
+      setVisible(1);
+    }
+  };
+
   return (
     <div className='reset_form'>
       <div className='reset_form_header'>Find Your Account</div>
@@ -24,6 +42,7 @@ export default function SearchAccount({ email, setEmail, error }) {
           email,
         }}
         validationSchema={validateEmail}
+        onSubmit={handleSubmit}
       >
         {(formik) => (
           <Form>
@@ -33,7 +52,7 @@ export default function SearchAccount({ email, setEmail, error }) {
               onChange={(e) => setEmail(e.target.value)}
               placeholder='Email address or phone number'
             />
-            {error && <div className='error_text'>{error}</div>}
+            {isError && <div className='error_text'>{error.data.message}</div>}
             <div className='reset_form_btns'>
               <Link to='/login' className='gray_btn'>
                 Cancel

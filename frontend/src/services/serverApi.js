@@ -41,6 +41,13 @@ export const serverApi = createApi({
         body,
       }),
     }),
+    findUser: builder.mutation({
+      query: (body) => ({
+        url: `/user/find-user`,
+        method: 'POST',
+        body,
+      }),
+    }),
   }),
 });
 
@@ -49,4 +56,5 @@ export const {
   useLoginMutation,
   useActivateMutation,
   useSendVerificationMutation,
+  useFindUserMutation,
 } = serverApi;

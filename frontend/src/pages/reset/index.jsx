@@ -2,25 +2,24 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import LoginInput from '../../components/inputs/loginInput';
 import SearchAccount from './SearchAccount';
 import SendEmail from './SendEmail';
 import CodeVerification from './CodeVerification';
 import Footer from '../../components/login/Footer';
 import { logout } from '../../features/userSlice';
-import './style.scss';
 import ChangePassword from './ChangePassword';
+import './style.scss';
 
 export default function Reset() {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [visible, setVisible] = useState(3);
+  const [visible, setVisible] = useState(0);
   const [email, setEmail] = useState('');
-  const [error, setError] = useState('');
   const { code, setCode } = useState('');
   const [password, setPassword] = useState('');
   const [conf_password, setConf_password] = useState('');
+  const [userInfos, setUserInfos] = useState(null);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -49,16 +48,16 @@ export default function Reset() {
       </div>
       <div className='reset_wrap'>
         {visible === 0 && (
-          <SearchAccount email={email} setEmail={setEmail} error={error} />
-        )}
-        {visible === 1 && <SendEmail user={user} />}
-        {visible === 2 && (
-          <CodeVerification
-            user={user}
-            code={code}
-            setCode={setCode}
-            error={error}
+          <SearchAccount
+            email={email}
+            setEmail={setEmail}
+            setVisible={setVisible}
+            setUserInfos={setUserInfos}
           />
+        )}
+        {visible === 1 && userInfos && <SendEmail userInfos={userInfos} />}
+        {visible === 2 && (
+          <CodeVerification user={user} code={code} setCode={setCode} />
         )}
         {visible === 3 && (
           <ChangePassword
