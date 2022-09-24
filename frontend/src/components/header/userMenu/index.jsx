@@ -14,6 +14,7 @@ export default function UserMenu({ user }) {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('persist:root');
     dispatch(logout());
     navigate('/login');
   };
