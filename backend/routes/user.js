@@ -5,6 +5,7 @@ import {
   register,
   auth,
   sendVerification,
+  findUser,
 } from '../controllers/user';
 import { authUser } from '../middlewares/auth';
 
@@ -15,5 +16,6 @@ router.post('/activate', activateAccount);
 router.post('/login', login);
 router.post('/send-verification', authUser, sendVerification);
 router.post('/auth', authUser, auth);
+router.post('/find-user', findUser);
 
 export default router;
