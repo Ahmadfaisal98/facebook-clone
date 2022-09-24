@@ -1,9 +1,9 @@
-const express = require('express');
-const { createPost } = require('../controllers/post');
-const { authUser } = require('../middlewares/auth');
+import express from 'express';
+import { createPost } from '../controllers/post';
+import { authUser } from '../middlewares/auth';
 
 const router = express.Router();
 
-router.post('/create-post', authUser, createPost);
+router.post('/create', authUser, createPost);
 
-module.exports = router;
+export default router;

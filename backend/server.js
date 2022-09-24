@@ -3,11 +3,17 @@ import cors from 'cors';
 import routes from './routes/index.js';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
+import fileUpload from 'express-fileupload';
 
 const app = express();
 app.use(express.json());
 app.use(morgan('dev'));
 app.use(cors({ origin: ['http://localhost:3000', 'some other link'] }));
+app.use(
+  fileUpload({
+    useTempFiles: true,
+  })
+);
 
 app.use('/', routes);
 
