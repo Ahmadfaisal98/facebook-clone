@@ -7,8 +7,9 @@ import './style.scss';
 
 export default function CreatePostPopup({ user }) {
   const [text, setText] = useState('');
-  const [showPrev, setShowPrev] = useState(true);
+  const [showPrev, setShowPrev] = useState(false);
   const [images, setImages] = useState([]);
+  const [background, setBackground] = useState('');
 
   return (
     <div className='blur'>
@@ -39,6 +40,8 @@ export default function CreatePostPopup({ user }) {
             user={user}
             setText={setText}
             showPrev={showPrev}
+            setBackground={setBackground}
+            background={background}
           />
         ) : (
           <ImagePreview
