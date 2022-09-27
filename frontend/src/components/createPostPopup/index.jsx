@@ -16,6 +16,7 @@ export default function CreatePostPopup({ user, setVisible }) {
   const [showPrev, setShowPrev] = useState(false);
   const [images, setImages] = useState([]);
   const [background, setBackground] = useState('');
+  const [customError, setCustomError] = useState('');
   const popup = useRef(null);
   const [postCreate, { isLoading, isError, error }] = useCreateMutation();
   const [
@@ -26,6 +27,8 @@ export default function CreatePostPopup({ user, setVisible }) {
   useClickOutside(popup, () => setVisible(false));
 
   const handleSubmit = async () => {
+    if (!text) return;
+
     let resUpload = [];
     let isUploadSuccess = true;
     if (images.length) {
@@ -38,15 +41,19 @@ export default function CreatePostPopup({ user, setVisible }) {
       postImages.forEach((image) => {
         formData.append('file', image);
       });
-      const { data: dataUpload } = await uploadImage(formData);
+      const { data: dataUpload, error: errorUpload } = await uploadImage(
+        formData
+      );
       setImages([]);
       if (dataUpload) {
         resUpload = dataUpload;
         isUploadSuccess = true;
+      } else {
+        setCustomError(errorUpload.data.message);
       }
     }
 
-    const { data: dataPost } = await postCreate({
+    const { data: dataPost, error: errorPost } = await postCreate({
       type: null,
       background,
       images: resUpload,
@@ -58,16 +65,22 @@ export default function CreatePostPopup({ user, setVisible }) {
       setBackground('');
       setText('');
       setVisible(false);
+    } else {
+      setCustomError(errorPost.data.message);
     }
   };
+
+  const errorCondition = customError || (isError && isErrorUpload);
 
   return (
     <div className='blur'>
       <div className='postBox' ref={popup}>
-        {isError && isErrorUpload && (
+        {errorCondition && (
           <PostError
-            error={error?.data?.message || errorUpload?.data?.message}
-            handleSubmit={handleSubmit}
+            error={
+              error?.data?.message || errorUpload?.data?.message || customError
+            }
+            setError={setCustomError}
           />
         )}
         <div className='box_header'>
@@ -108,6 +121,7 @@ export default function CreatePostPopup({ user, setVisible }) {
             images={images}
             setImages={setImages}
             setShowPrev={setShowPrev}
+            setError={setCustomError}
           />
         )}
         <AddToYourPost setShowPrev={setShowPrev} />
