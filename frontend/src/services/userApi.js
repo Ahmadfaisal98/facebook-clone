@@ -1,9 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-export const serverApi = createApi({
-  reducerPath: 'serverApi',
+export const userApi = createApi({
+  reducerPath: 'userApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env.REACT_APP_BASE_URL,
+    baseUrl: process.env.REACT_APP_BASE_URL + '/user',
     prepareHeaders: (headers) => {
       const token = localStorage.getItem('token');
       if (token) {
@@ -15,56 +15,56 @@ export const serverApi = createApi({
   endpoints: (builder) => ({
     register: builder.mutation({
       query: (body) => ({
-        url: `/user/register`,
+        url: `/register`,
         method: 'POST',
         body,
       }),
     }),
     login: builder.mutation({
       query: (body) => ({
-        url: `/user/login`,
+        url: `/login`,
         method: 'POST',
         body,
       }),
     }),
     activate: builder.mutation({
       query: (body) => ({
-        url: `/user/activate`,
+        url: `/activate`,
         method: 'POST',
         body,
       }),
     }),
     sendVerification: builder.mutation({
       query: (body) => ({
-        url: `/user/send-verification`,
+        url: `/send-verification`,
         method: 'POST',
         body,
       }),
     }),
     findUser: builder.mutation({
       query: (body) => ({
-        url: `/user/find-user`,
+        url: `/find-user`,
         method: 'POST',
         body,
       }),
     }),
     sendResetCodeVerification: builder.mutation({
       query: (body) => ({
-        url: `/user/send-reset-code-verification`,
+        url: `/send-reset-code-verification`,
         method: 'POST',
         body,
       }),
     }),
     validateResetCode: builder.mutation({
       query: (body) => ({
-        url: `/user/validate-reset-code`,
+        url: `/validate-reset-code`,
         method: 'POST',
         body,
       }),
     }),
     changePassword: builder.mutation({
       query: (body) => ({
-        url: `/user/change-password`,
+        url: `/change-password`,
         method: 'POST',
         body,
       }),
@@ -81,4 +81,4 @@ export const {
   useSendResetCodeVerificationMutation,
   useValidateResetCodeMutation,
   useChangePasswordMutation,
-} = serverApi;
+} = userApi;

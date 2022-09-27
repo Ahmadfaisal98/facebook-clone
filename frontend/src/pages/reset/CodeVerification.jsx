@@ -2,7 +2,7 @@ import { Form, Formik } from 'formik';
 import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
 import LoginInput from '../../components/inputs/loginInput';
-import { useValidateResetCodeMutation } from '../../services/serverApi';
+import { useValidateResetCodeMutation } from '../../services/userApi';
 
 export default function CodeVerification({
   code,

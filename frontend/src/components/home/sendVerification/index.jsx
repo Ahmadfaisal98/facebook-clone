@@ -1,4 +1,4 @@
-import { useSendVerificationMutation } from '../../../services/serverApi';
+import { useSendVerificationMutation } from '../../../services/userApi';
 import './style.scss';
 
 export default function SendVerification({ user }) {

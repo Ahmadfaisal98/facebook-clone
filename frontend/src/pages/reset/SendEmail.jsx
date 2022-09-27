@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useSendResetCodeVerificationMutation } from '../../services/serverApi';
+import { useSendResetCodeVerificationMutation } from '../../services/userApi';
 
 export default function SendEmail({ userInfos, setVisible }) {
   const [sendResetCode, { error, isError, isLoading }] =

@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import DotLoader from 'react-spinners/DotLoader';
 
 import LoginInput from '../inputs/loginInput';
-import { useLoginMutation } from '../../services/serverApi';
+import { useLoginMutation } from '../../services/userApi';
 import { updateUser } from '../../features/userSlice';
 
 export default function LoginForm({ setVisible }) {

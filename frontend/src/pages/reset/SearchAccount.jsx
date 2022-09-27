@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
 import LoginInput from '../../components/inputs/loginInput';
-import { useFindUserMutation } from '../../services/serverApi';
+import { useFindUserMutation } from '../../services/userApi';
 
 export default function SearchAccount({
   email,

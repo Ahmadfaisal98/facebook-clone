@@ -8,7 +8,7 @@ import LeftHome from '../../components/home/left';
 import RightHome from '../../components/home/right';
 import Stories from '../../components/home/stories';
 import ActivateForm from './ActivateForm';
-import { useActivateMutation } from '../../services/serverApi';
+import { useActivateMutation } from '../../services/userApi';
 import { updateUser } from '../../features/userSlice';
 import './style.scss';
 
