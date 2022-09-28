@@ -260,3 +260,16 @@ export const changePassword = async (req, res) => {
   );
   return res.status(200).json({ message: 'ok', status: 200 });
 };
+
+export const profile = async (req, res) => {
+  try {
+    const { username } = req.params;
+    const [profile] = await User.find({ username }).select('-password');
+    if (!profile) {
+      return res.status(404).json({ message: 'User is not found' });
+    }
+    return res.status(200).json(profile);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
