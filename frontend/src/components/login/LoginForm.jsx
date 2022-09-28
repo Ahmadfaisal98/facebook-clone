@@ -38,7 +38,9 @@ export default function LoginForm({ setVisible }) {
     if (result.data.status === 200) {
       localStorage.setItem('token', result.data.user.token);
       dispatch(updateUser({ ...result.data.user }));
+      // setInterval(() => {
       navigate('/');
+      // }, 1000);
     }
   };
 

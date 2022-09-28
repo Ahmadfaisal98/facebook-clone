@@ -14,6 +14,7 @@ import CreatePostPopup from './components/createPostPopup';
 function App() {
   const [visible, setVisible] = useState(false);
   const user = useSelector((state) => state.user);
+
   return (
     <div>
       {visible && <CreatePostPopup user={user} setVisible={setVisible} />}

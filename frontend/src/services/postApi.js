@@ -12,6 +12,7 @@ export const postApi = createApi({
       return headers;
     },
   }),
+  tagTypes: ['post'],
   endpoints: (builder) => ({
     create: builder.mutation({
       query: (body) => ({
@@ -19,8 +20,15 @@ export const postApi = createApi({
         method: 'POST',
         body,
       }),
+      invalidatesTags: ['post'],
+    }),
+    getAllPost: builder.query({
+      query: () => ({
+        url: `/get-all`,
+      }),
+      providesTags: ['post'],
     }),
   }),
 });
 
-export const { useCreateMutation } = postApi;
+export const { useCreateMutation, useGetAllPostQuery } = postApi;
