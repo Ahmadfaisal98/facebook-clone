@@ -69,6 +69,11 @@ export const userApi = createApi({
         body,
       }),
     }),
+    profileUser: builder.query({
+      query: (username) => ({
+        url: `/profile/${username}`,
+      }),
+    }),
   }),
 });
 
@@ -81,4 +86,5 @@ export const {
   useSendResetCodeVerificationMutation,
   useValidateResetCodeMutation,
   useChangePasswordMutation,
+  useProfileUserQuery,
 } = userApi;
