@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 
 import LoginInput from '../../components/inputs/loginInput';
-import { useChangePasswordMutation } from '../../services/serverApi';
+import { useChangePasswordMutation } from '../../services/userApi';
 
 export default function ChangePassword({
   password,

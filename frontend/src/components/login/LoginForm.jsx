@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import DotLoader from 'react-spinners/DotLoader';
 
 import LoginInput from '../inputs/loginInput';
-import { useLoginMutation } from '../../services/serverApi';
+import { useLoginMutation } from '../../services/userApi';
 import { updateUser } from '../../features/userSlice';
 
 export default function LoginForm({ setVisible }) {
@@ -38,7 +38,9 @@ export default function LoginForm({ setVisible }) {
     if (result.data.status === 200) {
       localStorage.setItem('token', result.data.user.token);
       dispatch(updateUser({ ...result.data.user }));
+      // setInterval(() => {
       navigate('/');
+      // }, 1000);
     }
   };
 

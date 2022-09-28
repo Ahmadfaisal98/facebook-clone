@@ -9,10 +9,12 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 
 import userSlice from '../features/userSlice';
-import { serverApi } from '../services/serverApi';
-import storage from 'redux-persist/lib/storage';
+import { userApi } from '../services/userApi';
+import { postApi } from '../services/postApi';
+import { uploadApi } from '../services/uploadApi';
 
 const persistConfig = {
   key: 'root',
@@ -21,7 +23,9 @@ const persistConfig = {
 
 const reducers = combineReducers({
   user: userSlice,
-  [serverApi.reducerPath]: serverApi.reducer,
+  [userApi.reducerPath]: userApi.reducer,
+  [postApi.reducerPath]: postApi.reducer,
+  [uploadApi.reducerPath]: uploadApi.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);
@@ -34,7 +38,10 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(serverApi.middleware),
+    })
+      .concat(userApi.middleware)
+      .concat(postApi.middleware)
+      .concat(uploadApi.middleware),
   devTools: process.env.NODE_ENV !== 'production',
 });
 

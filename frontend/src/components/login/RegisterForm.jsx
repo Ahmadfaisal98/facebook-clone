@@ -6,7 +6,7 @@ import DotLoader from 'react-spinners/DotLoader';
 import RegisterInput from '../inputs/registerInput';
 import DateOfBirthSelect from './DateOfBirthSelect';
 import GenderSelect from './GenderSelect';
-import { useRegisterMutation } from '../../services/serverApi';
+import { useRegisterMutation } from '../../services/userApi';
 
 export default function RegisterForm({ setVisible }) {
   const [user, setUser] = useState({
