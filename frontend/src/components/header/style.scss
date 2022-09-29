@@ -453,6 +453,10 @@
     fill: var(--blue-color);
   }
 }
+.active_link {
+  background: var(--light-blue-color);
+  color: var(--blue-color);
+}
 
 /* Active header */
 
