@@ -8,12 +8,12 @@ import CreateComment from './CreateComment';
 import './style.scss';
 import PostMenu from './PostMenu';
 
-export default function Post({ post, user }) {
+export default function Post({ post, user, profile }) {
   const [visible, setVisible] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
 
   return (
-    <div className='post'>
+    <div className='post' style={{ width: `${profile ? '100%' : ''}` }}>
       <div className='post_header'>
         <Link
           to={`/profile/${post.user.username}`}

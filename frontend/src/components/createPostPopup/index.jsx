@@ -4,7 +4,7 @@ import EmojiPickerBackgrounds from './EmojiPickerBackgrounds';
 import AddToYourPost from './AddToYourPost';
 import ImagePreview from './ImagePreview';
 import useClickOutside from '../../hooks/useClickOutside';
-import { useCreateMutation } from '../../services/postApi';
+import { useCreatePostMutation } from '../../services/postApi';
 import PulseLoader from 'react-spinners/PulseLoader';
 import './style.scss';
 import PostError from './PostError';
@@ -18,7 +18,7 @@ export default function CreatePostPopup({ user, setVisible }) {
   const [background, setBackground] = useState('');
   const [customError, setCustomError] = useState('');
   const popup = useRef(null);
-  const [postCreate, { isLoading, isError, error }] = useCreateMutation();
+  const [postCreate, { isLoading, isError, error }] = useCreatePostMutation();
   const [
     uploadImage,
     { isLoading: isLoadingUpload, isError: isErrorUpload, error: errorUpload },

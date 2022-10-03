@@ -12,6 +12,7 @@ export const uploadApi = createApi({
       return headers;
     },
   }),
+  tagTypes: ['upload', 'profile'],
   endpoints: (builder) => ({
     uploadImage: builder.mutation({
       query: (body) => ({
@@ -19,8 +20,17 @@ export const uploadApi = createApi({
         method: 'POST',
         body,
       }),
+      invalidatesTags: ['upload'],
+    }),
+    listImages: builder.mutation({
+      query: (body) => ({
+        url: `/list-images`,
+        method: 'POST',
+        body,
+      }),
+      providesTags: ['upload', 'profile'],
     }),
   }),
 });
 
-export const { useUploadImageMutation } = uploadApi;
+export const { useUploadImageMutation, useListImagesMutation } = uploadApi;
