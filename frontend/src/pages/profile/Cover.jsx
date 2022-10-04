@@ -1,15 +1,16 @@
 import { useCallback, useRef, useState, useEffect } from 'react';
 import Cropper from 'react-easy-crop';
 import PulseLoader from 'react-spinners/PulseLoader';
+import { useSelector } from 'react-redux';
 
 import useClickOutside from '../../hooks/useClickOutside';
 import getCroppedImg from '../../helpers/getCroppedImg';
 import { useUploadImageMutation } from '../../services/uploadApi';
 import { useCreatePostMutation } from '../../services/postApi';
 import { useUpdateCoverPictureMutation } from '../../services/userApi';
-import { useSelector } from 'react-redux';
+import OldCovers from './OldCovers';
 
-export default function Cover({ cover, visitor }) {
+export default function Cover({ cover, visitor, photos }) {
   const [showCoverMenu, setShowCoverMenu] = useState(false);
   const [error, setError] = useState('');
   const [coverPicture, setCoverPicture] = useState('');
@@ -17,6 +18,7 @@ export default function Cover({ cover, visitor }) {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [width, setWidth] = useState();
+  const [showOldCovers, setShowOldCovers] = useState(false);
 
   const menuRef = useRef(null);
   const refInput = useRef(null);
@@ -186,7 +188,10 @@ export default function Cover({ cover, visitor }) {
           </div>
           {showCoverMenu && (
             <div className='open_cover_menu' ref={menuRef}>
-              <div className='open_cover_menu_item hover1'>
+              <div
+                className='open_cover_menu_item hover1'
+                onClick={() => setShowOldCovers(true)}
+              >
                 <i className='photo_icon'></i>
                 Select Photo
               </div>
@@ -200,6 +205,13 @@ export default function Cover({ cover, visitor }) {
             </div>
           )}
         </div>
+      )}
+      {showOldCovers && (
+        <OldCovers
+          photos={photos}
+          setCoverPicture={setCoverPicture}
+          setShow={setShowOldCovers}
+        />
       )}
     </div>
   );
