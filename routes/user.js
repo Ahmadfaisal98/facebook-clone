@@ -11,6 +11,7 @@ import {
   changePassword,
   profile,
   updateProfilePicture,
+  updateCover,
 } from '../controllers/user';
 import { authUser } from '../middlewares/auth';
 
@@ -27,5 +28,6 @@ router.post('/validate-reset-code', validateResetCode);
 router.post('/change-password', changePassword);
 router.get('/profile/:username', profile);
 router.put('/profile-picture', authUser, updateProfilePicture);
+router.put('/cover', authUser, updateCover);
 
 export default router;
