@@ -4,31 +4,38 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import Header from '../../components/header';
 import Cover from './Cover';
-import { useProfileUserQuery } from '../../services/userApi';
 import ProfilePictureInfos from './ProfilePictureInfos';
 import ProfileMenu from './ProfileMenu';
 import PplYouMayKnow from './PplYouMayKnow';
 import CreatePost from '../../components/createPost';
 import GridPosts from './GridPosts';
 import Post from '../../components/post';
-import './style.scss';
 import Photos from './Photos';
 import Friends from './Friends';
+import { useProfileUserQuery } from '../../services/userApi';
+import { useListImagesQuery } from '../../services/uploadApi';
+import './style.scss';
 
 export default function Profile({ setVisible }) {
   const { username } = useParams();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
-  const userName = username ? username : user.username;
+  const userName = username || user.username;
   const visitor = userName !== user.username;
 
+  const payload = {
+    path: `${userName}/*`,
+    max: 30,
+    sort: 'desc',
+  };
+  const { data: photos } = useListImagesQuery(payload);
   const { data: profile, isError } = useProfileUserQuery(userName);
 
   useEffect(() => {
     if (isError) {
       navigate('/profile');
     }
-  }, [isError]);
+  }, [isError, navigate]);
 
   return (
     <div className='profile'>
@@ -36,7 +43,11 @@ export default function Profile({ setVisible }) {
       <div className='profile_top'>
         <div className='profile_container'>
           <Cover cover={profile?.cover} visitor={visitor} />
-          <ProfilePictureInfos profile={profile} visitor={visitor} />
+          <ProfilePictureInfos
+            profile={profile}
+            visitor={visitor}
+            photos={photos?.resources}
+          />
           <ProfileMenu />
         </div>
       </div>
@@ -46,7 +57,7 @@ export default function Profile({ setVisible }) {
             <PplYouMayKnow />
             <div className='profile_grid'>
               <div className='profile_left'>
-                <Photos username={userName} />
+                <Photos username={userName} photos={photos} />
                 <Friends friends={profile?.friends} />
                 <div className='relative_fb_copyright'>
                   <Link to='/'>Privacy </Link>

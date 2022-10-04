@@ -1,13 +1,20 @@
 import { useCallback, useRef, useState } from 'react';
 import Cropper from 'react-easy-crop';
 import { useDispatch, useSelector } from 'react-redux';
+import PulseLoader from 'react-spinners/PulseLoader';
+
 import { updateUser } from '../../features/userSlice';
 import getCroppedImg from '../../helpers/getCroppedImg';
 import { useCreatePostMutation } from '../../services/postApi';
 import { useUploadImageMutation } from '../../services/uploadApi';
 import { useUpdateProfilePictureMutation } from '../../services/userApi';
 
-export default function UpdateProfilePicture({ setImage, image, setError }) {
+export default function UpdateProfilePicture({
+  setImage,
+  image,
+  setError,
+  setShow,
+}) {
   const [description, setDescription] = useState('');
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
@@ -15,9 +22,12 @@ export default function UpdateProfilePicture({ setImage, image, setError }) {
   const slider = useRef(null);
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const [uploadImages] = useUploadImageMutation();
-  const [createPost] = useCreatePostMutation();
-  const [updateProfilePicture] = useUpdateProfilePictureMutation();
+  const [uploadImages, { isLoading: loadingImages }] = useUploadImageMutation();
+  const [createPost, { isLoading: loadingPost }] = useCreatePostMutation();
+  const [updateProfilePicture, { isLoading: loadingProfile }] =
+    useUpdateProfilePictureMutation();
+
+  const isLoading = loadingImages || loadingPost || loadingProfile;
 
   const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
     setCroppedAreaPixels(croppedAreaPixels);
@@ -32,24 +42,16 @@ export default function UpdateProfilePicture({ setImage, image, setError }) {
   };
   const getCroppedImage = useCallback(
     async (show) => {
-      try {
-        const img = await getCroppedImg(image, croppedAreaPixels);
-        if (show) {
-          setZoom(1);
-          setCrop({ x: 0, y: 0 });
-          setImage(img);
-          console.log('just show');
-        } else {
-          console.log('not show');
-          console.log(img);
-
-          return img;
-        }
-      } catch (error) {
-        console.log(error);
+      const img = await getCroppedImg(image, croppedAreaPixels);
+      if (show) {
+        setZoom(1);
+        setCrop({ x: 0, y: 0 });
+        return setImage(img);
       }
+
+      return img;
     },
-    [croppedAreaPixels]
+    [croppedAreaPixels, setImage, image]
   );
 
   const handleProfilePicture = async () => {
@@ -86,6 +88,8 @@ export default function UpdateProfilePicture({ setImage, image, setError }) {
     }
 
     dispatch(updateUser({ picture: dataImages[0].url }));
+    setImage('');
+    setShow(false);
   };
 
   return (
@@ -149,9 +153,15 @@ export default function UpdateProfilePicture({ setImage, image, setError }) {
         Your profile picture is public
       </div>
       <div className='update_submit_wrap'>
-        <div className='blue_link'>Cancel</div>
-        <button className='blue_btn' onClick={handleProfilePicture}>
-          Save
+        <div className='blue_link' onClick={() => setImage('')}>
+          Cancel
+        </div>
+        <button
+          className='blue_btn'
+          disabled={isLoading}
+          onClick={handleProfilePicture}
+        >
+          {isLoading ? <PulseLoader color='#fff' size={5} /> : 'Save'}
         </button>
       </div>
     </div>

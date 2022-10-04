@@ -12,7 +12,7 @@ export const uploadApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ['upload', 'profile'],
+  tagTypes: ['upload'],
   endpoints: (builder) => ({
     uploadImage: builder.mutation({
       query: (body) => ({
@@ -22,15 +22,13 @@ export const uploadApi = createApi({
       }),
       invalidatesTags: ['upload'],
     }),
-    listImages: builder.mutation({
-      query: (body) => ({
-        url: `/list-images`,
-        method: 'POST',
-        body,
+    listImages: builder.query({
+      query: ({ path, sort, max }) => ({
+        url: `/list-images?path=${path}&sort=${sort}&max=${max}`,
       }),
-      providesTags: ['upload', 'profile'],
+      providesTags: ['upload'],
     }),
   }),
 });
 
-export const { useUploadImageMutation, useListImagesMutation } = uploadApi;
+export const { useUploadImageMutation, useListImagesQuery } = uploadApi;

@@ -1,19 +1,4 @@
-import { useEffect } from 'react';
-import { useListImagesMutation } from '../../services/uploadApi';
-
-export default function Photos({ username }) {
-  const [getListImage, { data: photos }] = useListImagesMutation();
-
-  const payload = {
-    path: `${username}/*`,
-    max: 30,
-    sort: 'desc',
-  };
-
-  useEffect(() => {
-    getListImage(payload);
-  }, []);
-
+export default function Photos({ photos }) {
   return (
     <div className='profile_card'>
       <div className='profile_card_header'>
@@ -25,7 +10,7 @@ export default function Photos({ username }) {
           ? ''
           : photos?.total_count === 1
           ? '1 Photo'
-          : `${photos?.total_count} photos`}
+          : `${photos?.total_count ? 'photos' : ''}`}
       </div>
       <div className='profile_card_grid'>
         {photos?.resources &&

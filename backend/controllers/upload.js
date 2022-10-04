@@ -23,7 +23,7 @@ export const uploadImages = async (req, res) => {
 };
 
 export const listImages = async (req, res) => {
-  const { path, sort, max } = req.body;
+  const { path, sort, max } = req.query;
 
   cloudinary.v2.search
     .expression(`${path}`)
