@@ -12,7 +12,7 @@ export const userApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ['profile'],
+  tagTypes: ['profile', 'cover'],
   endpoints: (builder) => ({
     register: builder.mutation({
       query: (body) => ({
@@ -82,7 +82,15 @@ export const userApi = createApi({
       query: (username) => ({
         url: `/profile/${username}`,
       }),
-      providesTags: ['profile'],
+      providesTags: ['profile', 'cover'],
+    }),
+    updateCoverPicture: builder.mutation({
+      query: (body) => ({
+        url: `/cover`,
+        method: 'PUT',
+        body,
+      }),
+      invalidatesTags: ['cover'],
     }),
   }),
 });
@@ -98,4 +106,5 @@ export const {
   useChangePasswordMutation,
   useProfileUserQuery,
   useUpdateProfilePictureMutation,
+  useUpdateCoverPictureMutation,
 } = userApi;

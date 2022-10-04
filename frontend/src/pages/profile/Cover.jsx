@@ -4,10 +4,10 @@ import PulseLoader from 'react-spinners/PulseLoader';
 
 import useClickOutside from '../../hooks/useClickOutside';
 import getCroppedImg from '../../helpers/getCroppedImg';
-import { useDispatch, useSelector } from 'react-redux';
 import { useUploadImageMutation } from '../../services/uploadApi';
 import { useCreatePostMutation } from '../../services/postApi';
-import { updateUser } from '../../features/userSlice';
+import { useUpdateCoverPictureMutation } from '../../services/userApi';
+import { useSelector } from 'react-redux';
 
 export default function Cover({ cover, visitor }) {
   const [showCoverMenu, setShowCoverMenu] = useState(false);
@@ -23,12 +23,13 @@ export default function Cover({ cover, visitor }) {
   const coverRef = useRef(null);
 
   const user = useSelector((state) => state.user);
-  const dispatch = useDispatch();
 
   const [uploadImages, { isLoading: loadingImages }] = useUploadImageMutation();
   const [createPost, { isLoading: loadingPost }] = useCreatePostMutation();
+  const [updateCoverPicture, { isLoading: loadingCover }] =
+    useUpdateCoverPictureMutation();
 
-  const isLoading = loadingImages || loadingPost;
+  const isLoading = loadingImages || loadingPost || loadingCover;
 
   useClickOutside(menuRef, () => setShowCoverMenu(false));
 
@@ -81,7 +82,7 @@ export default function Cover({ cover, visitor }) {
   const handleBackgroundPicture = async () => {
     let img = await getCroppedImage();
     let blob = await fetch(img).then((b) => b.blob());
-    const path = `${user.username}/profile_pictures`;
+    const path = `${user.username}/cover_pictures`;
     let formData = new FormData();
     formData.append('file', blob);
     formData.append('path', path);
@@ -93,15 +94,15 @@ export default function Cover({ cover, visitor }) {
       return setError(errorImages.data.message);
     }
 
-    // const { error: errorProfile } = await updateProfilePicture({
-    //   url: dataImages[0].url,
-    // });
-    // if (errorProfile) {
-    //   return setError(errorProfile.data.message);
-    // }
+    const { error: errorCover } = await updateCoverPicture({
+      url: dataImages[0].url,
+    });
+    if (errorCover) {
+      return setError(errorCover.data.message);
+    }
 
     const { error: errorPost } = await createPost({
-      type: 'coverPicture',
+      type: 'cover',
       background: null,
       images: dataImages,
       user: user.id,
@@ -110,7 +111,6 @@ export default function Cover({ cover, visitor }) {
       return setError(errorPost.data.message);
     }
 
-    dispatch(updateUser({ picture: dataImages[0].url }));
     setCoverPicture('');
     setShowCoverMenu(false);
   };
@@ -174,7 +174,7 @@ export default function Cover({ cover, visitor }) {
           />
         </div>
       )}
-      {cover && <img src={cover} className='cover' alt='' />}
+      {cover && !coverPicture && <img src={cover} className='cover' alt='' />}
       {!visitor && (
         <div className='update_cover_wrapper'>
           <div
