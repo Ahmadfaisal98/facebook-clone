@@ -19,9 +19,11 @@ export default function UpdateProfilePicture({
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+
   const slider = useRef(null);
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
+
   const [uploadImages, { isLoading: loadingImages }] = useUploadImageMutation();
   const [createPost, { isLoading: loadingPost }] = useCreatePostMutation();
   const [updateProfilePicture, { isLoading: loadingProfile }] =
