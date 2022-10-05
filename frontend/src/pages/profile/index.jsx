@@ -15,6 +15,7 @@ import Friends from './Friends';
 import { useProfileUserQuery } from '../../services/userApi';
 import { useListImagesQuery } from '../../services/uploadApi';
 import './style.scss';
+import Intro from '../../components/intro';
 
 export default function Profile({ setVisible }) {
   const { username } = useParams();
@@ -61,6 +62,7 @@ export default function Profile({ setVisible }) {
             <PplYouMayKnow />
             <div className='profile_grid'>
               <div className='profile_left'>
+                <Intro details={profile.details} />
                 <Photos username={userName} photos={photos} />
                 <Friends friends={profile?.friends} />
                 <div className='relative_fb_copyright'>
