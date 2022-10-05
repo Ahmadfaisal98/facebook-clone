@@ -62,7 +62,7 @@ export default function Profile({ setVisible }) {
             <PplYouMayKnow />
             <div className='profile_grid'>
               <div className='profile_left'>
-                <Intro details={profile.details} />
+                <Intro details={profile?.details} visitor={visitor} />
                 <Photos username={userName} photos={photos} />
                 <Friends friends={profile?.friends} />
                 <div className='relative_fb_copyright'>
