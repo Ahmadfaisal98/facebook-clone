@@ -12,6 +12,7 @@ import {
   profile,
   updateProfilePicture,
   updateCover,
+  updateDetails,
 } from '../controllers/user';
 import { authUser } from '../middlewares/auth';
 
@@ -29,5 +30,6 @@ router.post('/change-password', changePassword);
 router.get('/profile/:username', profile);
 router.put('/profile-picture', authUser, updateProfilePicture);
 router.put('/cover', authUser, updateCover);
+router.put('/details', authUser, updateDetails);
 
 export default router;
