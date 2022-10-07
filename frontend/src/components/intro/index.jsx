@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useUpdateDetailsUserMutation } from '../../services/userApi';
 
 import Bio from './Bio';
 import './style.scss';
@@ -20,9 +21,18 @@ export default function Intro({ details, visitor }) {
   const [infos, setInfos] = useState(initial);
   const [showBio, setShowBio] = useState(false);
   const [max, setMax] = useState(infos?.bio ? 100 - infos?.bio.length : 100);
+  const [updateDetailsUser] = useUpdateDetailsUserMutation();
+
   const handleBioChange = (e) => {
     setInfos({ ...infos, bio: e.target.value });
     setMax(100 - e.target.value.length);
+  };
+
+  const updateDetails = async () => {
+    const { data } = await updateDetailsUser({ infos });
+    if (data) {
+      setShowBio(false);
+    }
   };
 
   return (
@@ -47,6 +57,7 @@ export default function Intro({ details, visitor }) {
           max={max}
           handleBioChange={handleBioChange}
           setShowBio={setShowBio}
+          updateDetails={updateDetails}
         />
       )}
       {infos.job && infos.workplace ? (

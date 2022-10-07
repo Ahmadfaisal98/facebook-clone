@@ -92,6 +92,14 @@ export const userApi = createApi({
       }),
       invalidatesTags: ['cover'],
     }),
+    updateDetailsUser: builder.mutation({
+      query: (body) => ({
+        url: `/details`,
+        method: 'PUT',
+        body,
+      }),
+      invalidatesTags: ['profile'],
+    }),
   }),
 });
 
@@ -107,4 +115,5 @@ export const {
   useProfileUserQuery,
   useUpdateProfilePictureMutation,
   useUpdateCoverPictureMutation,
+  useUpdateDetailsUserMutation,
 } = userApi;
