@@ -20,7 +20,7 @@ export default function Intro({ details, visitor }) {
   };
 
   const [infos, setInfos] = useState(initial);
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
   const [showBio, setShowBio] = useState(false);
   const [max, setMax] = useState(infos?.bio ? 100 - infos?.bio.length : 100);
   const [updateDetailsUser] = useUpdateDetailsUserMutation();
@@ -38,7 +38,6 @@ export default function Intro({ details, visitor }) {
     }
   };
 
-  console.log(infos);
   return (
     <div className='profile_card'>
       <div className='profile_card_header'>Intro</div>
