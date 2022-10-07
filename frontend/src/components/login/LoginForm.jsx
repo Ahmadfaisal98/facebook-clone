@@ -88,7 +88,7 @@ export default function LoginForm({ setVisible }) {
             Forgotten password?
           </Link>
           <DotLoader color='#1876f2' loading={isLoading} size={30} />
-          {isError && <div className='error_text'>{error.data.message}</div>}
+          {isError && <div className='error_text'>{error?.data?.message}</div>}
           <div className='sign_splitter'></div>
           <button
             className='blue_btn open_signup'

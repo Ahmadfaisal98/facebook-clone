@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import MenuItem from './MenuItem';
 import useClickOutside from '../../hooks/useClickOutside';
 export default function PostMenu({

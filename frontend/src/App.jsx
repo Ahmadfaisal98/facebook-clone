@@ -21,7 +21,16 @@ function App() {
       <Routes>
         <Route path='/activate/:token' element={<Activate />} exact />
         <Route element={<LoggedInRoutes />}>
-          <Route path='/profile' element={<Profile />} exact />
+          <Route
+            path='/profile'
+            element={<Profile setVisible={setVisible} />}
+            exact
+          />
+          <Route
+            path='/profile/:username'
+            element={<Profile setVisible={setVisible} />}
+            exact
+          />
           <Route path='/' element={<Home setVisible={setVisible} />} exact />
         </Route>
         <Route element={<NotLoggedInRoutes />}>

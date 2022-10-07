@@ -1,8 +1,9 @@
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 
 import User from '../models/User';
 import Code from '../models/Code';
-import bcrypt from 'bcrypt';
+import Post from '../models/Post';
 import { validateLength, validateUsername } from '../helpers/validation';
 import { generateToken } from '../helpers/tokens';
 import { sendResetCode, sendVerificationEmail } from '../helpers/mailer';
@@ -259,4 +260,64 @@ export const changePassword = async (req, res) => {
     }
   );
   return res.status(200).json({ message: 'ok', status: 200 });
+};
+
+export const profile = async (req, res) => {
+  try {
+    const { username } = req.params;
+    const profile = await User.findOne({ username }).select('-password');
+    if (!profile) {
+      return res.status(404).json({ message: 'User is not found' });
+    }
+    const posts = await Post.find({ user: profile._id })
+      .populate('user')
+      .sort({ createdAt: -1 });
+    return res.status(200).json({ ...profile.toObject(), posts });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const updateProfilePicture = async (req, res) => {
+  try {
+    const { url } = req.body;
+
+    await User.findByIdAndUpdate(req.user.id, {
+      picture: url,
+    });
+    res.json(url);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const updateCover = async (req, res) => {
+  try {
+    const { url } = req.body;
+
+    await User.findByIdAndUpdate(req.user.id, {
+      cover: url,
+    });
+    res.json(url);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const updateDetails = async (req, res) => {
+  try {
+    const { infos } = req.body;
+    const updated = await User.findByIdAndUpdate(
+      req.user.id,
+      {
+        details: infos,
+      },
+      {
+        new: true,
+      }
+    );
+    res.json(updated.details);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };

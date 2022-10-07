@@ -14,7 +14,7 @@ export const postApi = createApi({
   }),
   tagTypes: ['post'],
   endpoints: (builder) => ({
-    create: builder.mutation({
+    createPost: builder.mutation({
       query: (body) => ({
         url: `/create`,
         method: 'POST',
@@ -31,4 +31,4 @@ export const postApi = createApi({
   }),
 });
 
-export const { useCreateMutation, useGetAllPostQuery } = postApi;
+export const { useCreatePostMutation, useGetAllPostQuery } = postApi;
