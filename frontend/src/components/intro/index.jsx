@@ -2,12 +2,13 @@ import { useState } from 'react';
 import { useUpdateDetailsUserMutation } from '../../services/userApi';
 
 import Bio from './Bio';
+import EditDetails from './EditDetails';
 import './style.scss';
 
 export default function Intro({ details, visitor }) {
   const initial = {
     bio: details?.bio || 'Welcome to my profile',
-    othername: details?.othername || '',
+    otherName: details?.otherName || '',
     job: details?.job || '',
     workplace: details?.workplace || 'Google',
     highSchool: details?.highSchool || 'some high school',
@@ -19,13 +20,15 @@ export default function Intro({ details, visitor }) {
   };
 
   const [infos, setInfos] = useState(initial);
+  const [visible, setVisible] = useState(true);
   const [showBio, setShowBio] = useState(false);
   const [max, setMax] = useState(infos?.bio ? 100 - infos?.bio.length : 100);
   const [updateDetailsUser] = useUpdateDetailsUserMutation();
 
-  const handleBioChange = (e) => {
-    setInfos({ ...infos, bio: e.target.value });
-    setMax(100 - e.target.value.length);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setInfos({ ...infos, [name]: value });
+    setMax(100 - value.length);
   };
 
   const updateDetails = async () => {
@@ -35,10 +38,11 @@ export default function Intro({ details, visitor }) {
     }
   };
 
+  console.log(infos);
   return (
     <div className='profile_card'>
       <div className='profile_card_header'>Intro</div>
-      {infos?.bio && !showBio && (
+      {details?.bio && !showBio && (
         <div className='info_col'>
           <span className='info_text'>{infos.bio}</span>
           {!visitor && (
@@ -51,31 +55,41 @@ export default function Intro({ details, visitor }) {
           )}
         </div>
       )}
+      {!details?.bio && !showBio && !visitor && (
+        <button
+          className='gray_btn hover1 w100'
+          onClick={() => setShowBio(true)}
+        >
+          Add Bio
+        </button>
+      )}
       {showBio && (
         <Bio
           infos={infos}
           max={max}
-          handleBioChange={handleBioChange}
+          handleChange={handleChange}
           setShowBio={setShowBio}
           updateDetails={updateDetails}
+          placeholder='Add Bio'
+          name='bio'
         />
       )}
       {infos.job && infos.workplace ? (
         <div className='info_profile'>
           <img src='../../../icons/job.png' alt='' />
-          works as {infos.job} at <b>{infos.workplace}</b>
+          Works as {infos.job} at <b>{infos.workplace}</b>
         </div>
       ) : infos.job && !infos.workplace ? (
         <div className='info_profile'>
           <img src='../../../icons/job.png' alt='' />
-          works as {infos.job}
+          Works as {infos.job}
         </div>
       ) : (
         infos.workplace &&
         !infos.job && (
           <div className='info_profile'>
             <img src='../../../icons/job.png' alt='' />
-            works at {infos.workplace}
+            Works at {infos.workplace}
           </div>
         )
       )}
@@ -88,13 +102,13 @@ export default function Intro({ details, visitor }) {
       {infos?.college && (
         <div className='info_profile'>
           <img src='../../../icons/studies.png' alt='' />
-          studied at {infos.college}
+          Studied at {infos.college}
         </div>
       )}
       {infos?.highSchool && (
         <div className='info_profile'>
           <img src='../../../icons/studies.png' alt='' />
-          studied at {infos.highSchool}
+          Studied at {infos.highSchool}
         </div>
       )}
       {infos?.currentCity && (
@@ -122,13 +136,27 @@ export default function Intro({ details, visitor }) {
         </div>
       )}
       {!visitor && (
-        <button className='gray_btn hover1 w100'>Edit Details</button>
+        <button
+          className='gray_btn hover1 w100'
+          onClick={() => setVisible(true)}
+        >
+          Edit Details
+        </button>
       )}
       {!visitor && (
         <button className='gray_btn hover1 w100'>Add Hobbies</button>
       )}
       {!visitor && (
         <button className='gray_btn hover1 w100'>Add Featured</button>
+      )}
+      {visible && !visitor && (
+        <EditDetails
+          details={details}
+          handleChange={handleChange}
+          updateDetails={updateDetails}
+          infos={infos}
+          setVisible={setVisible}
+        />
       )}
     </div>
   );
