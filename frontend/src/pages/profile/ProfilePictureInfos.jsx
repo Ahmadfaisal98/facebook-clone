@@ -1,16 +1,22 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import ProfilePicture from '../../components/profilePicture';
-
-export default function ProfilePictureInfos({ profile, visitor, photos }) {
+import Friendship from './Friendship';
+export default function ProfielPictureInfos({
+  profile,
+  visitor,
+  photos,
+  othername,
+}) {
   const [show, setShow] = useState(false);
-
+  const pRef = useRef(null);
   return (
     <div className='profile_img_wrap'>
-      {show && <ProfilePicture setShow={setShow} photos={photos} />}
+      {show && <ProfilePicture setShow={setShow} pRef={pRef} photos={photos} />}
       <div className='profile_w_left'>
         <div className='profile_w_img'>
           <div
             className='profile_w_bg'
+            ref={pRef}
             style={{
               backgroundSize: 'cover',
               backgroundImage: `url(${profile?.picture})`,
@@ -28,14 +34,15 @@ export default function ProfilePictureInfos({ profile, visitor, photos }) {
         <div className='profile_w_col'>
           <div className='profile_name'>
             {profile?.first_name} {profile?.last_name}
-            <div className='othername'>({profile?.details?.otherName})</div>
+            <div className='othername'>{othername && `(${othername})`}</div>
           </div>
           <div className='profile_friend_count'></div>
           <div className='profile_friend_imgs'></div>
         </div>
       </div>
-
-      {!visitor && (
+      {visitor ? (
+        <Friendship friendship={profile?.friendship} />
+      ) : (
         <div className='profile_w_right'>
           <div className='blue_btn'>
             <img src='../../../icons/plus.png' alt='' className='invert' />

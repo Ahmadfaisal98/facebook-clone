@@ -64,8 +64,6 @@ export default function Profile({ setVisible }) {
     };
   }, [scrollHeight]);
 
-  console.log(profile);
-
   return (
     <div className='profile'>
       <Header page='profile' />
