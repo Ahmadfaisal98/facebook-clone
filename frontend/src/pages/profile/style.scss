@@ -420,6 +420,12 @@
   top: 54px;
 }
 
+@media (min-width: 901px) {
+  .profile .createPost {
+    width: 100%;
+  }
+}
+
 @media (max-width: 900px) {
   .profile_w_left {
     flex-direction: column;
