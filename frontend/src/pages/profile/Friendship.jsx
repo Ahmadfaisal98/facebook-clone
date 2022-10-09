@@ -2,8 +2,10 @@ import { useRef, useState } from 'react';
 
 import useClickOutside from '../../hooks/useClickOutside';
 import {
+  useAcceptRequestFriendMutation,
   useAddFriendMutation,
   useCancelRequestFriendMutation,
+  useDeleteRequestFriendMutation,
   useFollowFriendMutation,
   useUnFollowFriendMutation,
   useUnFriendMutation,
@@ -18,6 +20,8 @@ export default function Friendship({ friendship, profileId }) {
   const [cancelRequest] = useCancelRequestFriendMutation();
   const [followFriend] = useFollowFriendMutation();
   const [unFollowFriend] = useUnFollowFriendMutation();
+  const [acceptRequest] = useAcceptRequestFriendMutation();
+  const [deleteRequest] = useDeleteRequestFriendMutation();
 
   const menu = useRef(null);
   const menu1 = useRef(null);
@@ -97,8 +101,18 @@ export default function Friendship({ friendship, profileId }) {
             </button>
             {respondMenu && (
               <div className='open_cover_menu' ref={menu1}>
-                <div className='open_cover_menu_item hover1'>Confirm</div>
-                <div className='open_cover_menu_item hover1'>Delete</div>
+                <div
+                  className='open_cover_menu_item hover1'
+                  onClick={() => acceptRequest(profileId)}
+                >
+                  Confirm
+                </div>
+                <div
+                  className='open_cover_menu_item hover1'
+                  onClick={() => deleteRequest(profileId)}
+                >
+                  Delete
+                </div>
               </div>
             )}
           </div>
