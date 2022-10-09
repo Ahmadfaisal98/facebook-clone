@@ -101,58 +101,51 @@ export const userApi = createApi({
       invalidatesTags: ['profile'],
     }),
     addFriend: builder.mutation({
-      query: (body, id) => ({
+      query: (id) => ({
         url: `/add-friend/${id}`,
         method: 'PUT',
-        body,
       }),
       invalidatesTags: ['profile'],
     }),
     cancelRequestFriend: builder.mutation({
-      query: (body, id) => ({
+      query: (id) => ({
         url: `/cancel-request/${id}`,
         method: 'PUT',
-        body,
       }),
       invalidatesTags: ['profile'],
     }),
     followFriend: builder.mutation({
-      query: (body, id) => ({
+      query: (id) => ({
         url: `/follow/${id}`,
         method: 'PUT',
-        body,
       }),
       invalidatesTags: ['profile'],
     }),
     unFollowFriend: builder.mutation({
-      query: (body, id) => ({
+      query: (id) => ({
         url: `/unfollow/${id}`,
         method: 'PUT',
-        body,
       }),
       invalidatesTags: ['profile'],
     }),
     acceptRequestFriend: builder.mutation({
-      query: (body, id) => ({
+      query: (id) => ({
         url: `/accept-request/${id}`,
         method: 'PUT',
-        body,
       }),
       invalidatesTags: ['profile'],
     }),
     unFriend: builder.mutation({
-      query: (body, id) => ({
+      query: (id) => ({
         url: `/unfriend/${id}`,
         method: 'PUT',
-        body,
       }),
       invalidatesTags: ['profile'],
     }),
     deleteRequestFriend: builder.mutation({
-      query: (body, id) => ({
+      query: (id) => ({
         url: `/delete-request/${id}`,
         method: 'PUT',
-        body,
       }),
       invalidatesTags: ['profile'],
     }),
@@ -172,4 +165,11 @@ export const {
   useUpdateProfilePictureMutation,
   useUpdateCoverPictureMutation,
   useUpdateDetailsUserMutation,
+  useAddFriendMutation,
+  useCancelRequestFriendMutation,
+  useFollowFriendMutation,
+  useUnFollowFriendMutation,
+  useAcceptRequestFriendMutation,
+  useUnFriendMutation,
+  useDeleteRequestFriendMutation,
 } = userApi;

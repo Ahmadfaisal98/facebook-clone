@@ -1,9 +1,23 @@
 import { useRef, useState } from 'react';
-import useClickOutside from '../../hooks/useClickOutside';
 
-export default function Friendship({ friendship }) {
+import useClickOutside from '../../hooks/useClickOutside';
+import {
+  useAddFriendMutation,
+  useCancelRequestFriendMutation,
+  useFollowFriendMutation,
+  useUnFollowFriendMutation,
+  useUnFriendMutation,
+} from '../../services/userApi';
+
+export default function Friendship({ friendship, profileId }) {
   const [friendsMenu, setFriendsMenu] = useState(false);
   const [respondMenu, setRespondMenu] = useState(false);
+
+  const [addFriend] = useAddFriendMutation();
+  const [unFriend] = useUnFriendMutation();
+  const [cancelRequest] = useCancelRequestFriendMutation();
+  const [followFriend] = useFollowFriendMutation();
+  const [unFollowFriend] = useUnFollowFriendMutation();
 
   const menu = useRef(null);
   const menu1 = useRef(null);
@@ -30,17 +44,26 @@ export default function Friendship({ friendship }) {
                 Edit Friend list
               </div>
               {friendship?.following ? (
-                <div className='open_cover_menu_item hover1'>
+                <div
+                  className='open_cover_menu_item hover1'
+                  onClick={() => unFollowFriend(profileId)}
+                >
                   <img src='../../../icons/unfollowOutlined.png' alt='' />
                   Unfollow
                 </div>
               ) : (
-                <div className='open_cover_menu_item hover1'>
+                <div
+                  className='open_cover_menu_item hover1'
+                  onClick={() => followFriend(profileId)}
+                >
                   <img src='../../../icons/unfollowOutlined.png' alt='' />
                   Follow
                 </div>
               )}
-              <div className='open_cover_menu_item hover1'>
+              <div
+                className='open_cover_menu_item hover1'
+                onClick={() => unFriend(profileId)}
+              >
                 <i className='unfriend_outlined_icon'></i>
                 Unfriend
               </div>
@@ -50,14 +73,14 @@ export default function Friendship({ friendship }) {
       ) : (
         !friendship?.requestSent &&
         !friendship?.requestReceived && (
-          <button className='blue_btn'>
+          <button className='blue_btn' onClick={() => addFriend(profileId)}>
             <img src='../../../icons/addFriend.png' alt='' className='invert' />
             <span>Add Friend</span>
           </button>
         )
       )}
       {friendship?.requestSent ? (
-        <button className='blue_btn'>
+        <button className='blue_btn' onClick={() => cancelRequest(profileId)}>
           <img
             src='../../../icons/cancelRequest.png'
             className='invert'
@@ -82,12 +105,12 @@ export default function Friendship({ friendship }) {
         )
       )}
       {friendship?.following ? (
-        <button className='gray_btn'>
+        <button className='gray_btn' onClick={() => unFollowFriend(profileId)}>
           <img src='../../../icons/follow.png' alt='' />
           <span>Following</span>
         </button>
       ) : (
-        <button className='blue_btn'>
+        <button className='blue_btn' onClick={() => followFriend(profileId)}>
           <img src='../../../icons/follow.png' className='invert' alt='' />
           <span>Follow</span>
         </button>
