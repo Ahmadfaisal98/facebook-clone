@@ -447,7 +447,7 @@ export const unfollow = async (req, res) => {
         sender.following.includes(receiver._id)
       ) {
         await receiver.updateOne({
-          $push: { followers: sender._id },
+          $pull: { followers: sender._id },
         });
 
         await sender.updateOne({
