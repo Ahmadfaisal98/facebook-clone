@@ -11,12 +11,17 @@ import {
   useGetReactQuery,
   useReactPostMutation,
 } from '../../services/reactApi';
+import Comment from './Comment';
 
 export default function Post({ post, user, profile }) {
   const [visible, setVisible] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const [count, setCount] = useState(1);
+
   const { data: react } = useGetReactQuery(post._id);
   const [reactPost] = useReactPostMutation();
+
+  const comments = [...post.comments];
 
   return (
     <div className='post' style={{ width: `${profile ? '100%' : ''}` }}>
@@ -116,7 +121,11 @@ export default function Post({ post, user, profile }) {
                 .map(
                   (value) =>
                     value.count > 0 && (
-                      <img src={`../../../reacts/${value.react}.svg`} alt='' />
+                      <img
+                        src={`../../../reacts/${value.react}.svg`}
+                        alt=''
+                        key={value.react}
+                      />
                     )
                 )}
           </div>
@@ -125,7 +134,7 @@ export default function Post({ post, user, profile }) {
           </div>
         </div>
         <div className='to_right'>
-          <div className='comments_count'>13 comments</div>
+          <div className='comments_count'>{comments.length} comments</div>
           <div className='share_count'>1 share</div>
         </div>
       </div>
@@ -197,7 +206,22 @@ export default function Post({ post, user, profile }) {
 
       <div className='comments_wrap'>
         <div className='comments_order'></div>
-        <CreateComment user={user} />
+        <CreateComment user={user} postId={post._id} setCount={setCount} />
+        {comments.length > 0 &&
+          comments
+            .sort((a, b) => {
+              return new Date(b.commentAt) - new Date(a.commentAt);
+            })
+            .slice(0, count)
+            .map((comment, i) => <Comment comment={comment} key={i} />)}
+        {count < comments.length && (
+          <div
+            className='view_comments'
+            onClick={() => setCount((prev) => prev + 3)}
+          >
+            View more comments
+          </div>
+        )}
       </div>
       {showMenu && (
         <PostMenu

@@ -28,7 +28,19 @@ export const postApi = createApi({
       }),
       providesTags: ['post'],
     }),
+    updateComment: builder.mutation({
+      query: (body) => ({
+        url: `/comment`,
+        method: 'PUT',
+        body,
+      }),
+      invalidatesTags: ['post'],
+    }),
   }),
 });
 
-export const { useCreatePostMutation, useGetAllPostQuery } = postApi;
+export const {
+  useCreatePostMutation,
+  useGetAllPostQuery,
+  useUpdateCommentMutation,
+} = postApi;
