@@ -124,7 +124,16 @@ export const login = async (req, res) => {
         .json({ message: 'Invalid credentials. Please try again!' });
     }
 
-    const token = await generateToken({ id: user._id.toString() }, '7d');
+    const token = await generateToken(
+      {
+        id: user._id.toString(),
+        username: user.username,
+        picture: user.picture,
+        first_name: user.first_name,
+        verified: user.verified,
+      },
+      '7d'
+    );
 
     return res.status(200).json({
       message: 'Login successful',
@@ -295,6 +304,10 @@ export const profile = async (req, res) => {
 
     const posts = await Post.find({ user: profile._id })
       .populate('user')
+      .populate(
+        'comments.commentBy',
+        'first_name last_name picture username commentAt'
+      )
       .sort({ createdAt: -1 });
 
     await profile.populate('friends', 'first_name last_name username picture');
