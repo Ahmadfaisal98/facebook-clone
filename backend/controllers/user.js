@@ -297,6 +297,7 @@ export const profile = async (req, res) => {
       .populate('user')
       .sort({ createdAt: -1 });
 
+    await profile.populate('friends', 'first_name last_name username picture');
     res.json({ ...profile.toObject(), posts, friendship });
   } catch (error) {
     console.log(error);
