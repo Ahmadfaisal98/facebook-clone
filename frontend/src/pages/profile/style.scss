@@ -116,6 +116,11 @@
       object-fit: cover;
       border-radius: 10px;
     }
+    & span {
+      color: var(--color-primary);
+      font-size: 14px;
+      padding-left: 1px;
+    }
   }
   /*-----profile card--------*/
 }
