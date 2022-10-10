@@ -15,6 +15,7 @@ import userSlice from '../features/userSlice';
 import { userApi } from '../services/userApi';
 import { postApi } from '../services/postApi';
 import { uploadApi } from '../services/uploadApi';
+import { reactApi } from '../services/reactApi';
 
 const persistConfig = {
   key: 'root',
@@ -26,6 +27,7 @@ const reducers = combineReducers({
   [userApi.reducerPath]: userApi.reducer,
   [postApi.reducerPath]: postApi.reducer,
   [uploadApi.reducerPath]: uploadApi.reducer,
+  [reactApi.reducerPath]: reactApi.reducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);
@@ -41,7 +43,8 @@ export const store = configureStore({
     })
       .concat(userApi.middleware)
       .concat(postApi.middleware)
-      .concat(uploadApi.middleware),
+      .concat(uploadApi.middleware)
+      .concat(reactApi.middleware),
   devTools: process.env.NODE_ENV !== 'production',
 });
 
