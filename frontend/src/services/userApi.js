@@ -100,6 +100,55 @@ export const userApi = createApi({
       }),
       invalidatesTags: ['profile'],
     }),
+    addFriend: builder.mutation({
+      query: (id) => ({
+        url: `/add-friend/${id}`,
+        method: 'PUT',
+      }),
+      invalidatesTags: ['profile'],
+    }),
+    cancelRequestFriend: builder.mutation({
+      query: (id) => ({
+        url: `/cancel-request/${id}`,
+        method: 'PUT',
+      }),
+      invalidatesTags: ['profile'],
+    }),
+    followFriend: builder.mutation({
+      query: (id) => ({
+        url: `/follow/${id}`,
+        method: 'PUT',
+      }),
+      invalidatesTags: ['profile'],
+    }),
+    unFollowFriend: builder.mutation({
+      query: (id) => ({
+        url: `/unfollow/${id}`,
+        method: 'PUT',
+      }),
+      invalidatesTags: ['profile'],
+    }),
+    acceptRequestFriend: builder.mutation({
+      query: (id) => ({
+        url: `/accept-request/${id}`,
+        method: 'PUT',
+      }),
+      invalidatesTags: ['profile'],
+    }),
+    unFriend: builder.mutation({
+      query: (id) => ({
+        url: `/unfriend/${id}`,
+        method: 'PUT',
+      }),
+      invalidatesTags: ['profile'],
+    }),
+    deleteRequestFriend: builder.mutation({
+      query: (id) => ({
+        url: `/delete-request/${id}`,
+        method: 'PUT',
+      }),
+      invalidatesTags: ['profile'],
+    }),
   }),
 });
 
@@ -116,4 +165,11 @@ export const {
   useUpdateProfilePictureMutation,
   useUpdateCoverPictureMutation,
   useUpdateDetailsUserMutation,
+  useAddFriendMutation,
+  useCancelRequestFriendMutation,
+  useFollowFriendMutation,
+  useUnFollowFriendMutation,
+  useAcceptRequestFriendMutation,
+  useUnFriendMutation,
+  useDeleteRequestFriendMutation,
 } = userApi;

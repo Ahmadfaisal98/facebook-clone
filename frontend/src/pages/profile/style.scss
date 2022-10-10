@@ -110,14 +110,40 @@
     width: 100%;
     height: 100%;
     cursor: pointer;
+    &:hover {
+      filter: brightness(110%);
+    }
     & img {
       width: 100%;
       height: 105px;
       object-fit: cover;
       border-radius: 10px;
     }
+    & span {
+      color: var(--color-primary);
+      font-size: 14px;
+      padding-left: 1px;
+    }
   }
   /*-----profile card--------*/
+  &_friend {
+    &_count {
+      font-weight: 600;
+    }
+    &_imgs {
+      display: flex;
+      align-items: center;
+    }
+    &_imgs img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      box-shadow: 0 1px 2px var(--shadow-1);
+    }
+    &_imgs img:hover {
+      filter: brightness(110%);
+    }
+  }
 }
 .cover {
   width: 100%;
@@ -420,6 +446,12 @@
   top: 54px;
 }
 
+@media (min-width: 901px) {
+  .profile .createPost {
+    width: 100%;
+  }
+}
+
 @media (max-width: 900px) {
   .profile_w_left {
     flex-direction: column;
@@ -454,6 +486,20 @@
   .bottom_container {
     padding: 5px;
   }
+  .friendship {
+    transform: translateY(-4rem);
+  }
+  .othername {
+    transform: translateY(-8px);
+  }
+  .profile_friend_count {
+    text-align: center;
+    transform: translateY(-15px);
+  }
+  .profile_friend_imgs {
+    justify-content: center;
+    transform: translateY(-10px);
+  }
 }
 @media (max-width: 650px) {
   .profile_menu_wrap {
@@ -463,6 +509,12 @@
 @media (max-width: 510px) {
   .udpate_cover_wrapper {
     bottom: 3rem;
+  }
+}
+
+@media (max-width: 405px) {
+  .friendship {
+    flex-direction: column;
   }
 }
 .scrollFixed .profile_left {
@@ -478,4 +530,18 @@
 }
 .showMore .profile_left {
   top: 54px;
+}
+.friendship {
+  z-index: 9;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.friendship .blue_btn {
+  height: 34px;
+}
+@media (min-width: 900px) {
+  .friendship {
+    transform: translateX(-1rem);
+  }
 }

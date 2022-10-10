@@ -13,6 +13,13 @@ import {
   updateProfilePicture,
   updateCover,
   updateDetails,
+  addFriend,
+  cancelRequest,
+  follow,
+  unfollow,
+  acceptRequest,
+  unfriend,
+  deleteRequest,
 } from '../controllers/user';
 import { authUser } from '../middlewares/auth';
 
@@ -27,9 +34,16 @@ router.post('/find-user', findUser);
 router.post('/send-reset-code-verification', sendResetPasswordCode);
 router.post('/validate-reset-code', validateResetCode);
 router.post('/change-password', changePassword);
-router.get('/profile/:username', profile);
+router.get('/profile/:username', authUser, profile);
 router.put('/profile-picture', authUser, updateProfilePicture);
 router.put('/cover', authUser, updateCover);
 router.put('/details', authUser, updateDetails);
+router.put('/add-friend/:id', authUser, addFriend);
+router.put('/cancel-request/:id', authUser, cancelRequest);
+router.put('/follow/:id', authUser, follow);
+router.put('/unfollow/:id', authUser, unfollow);
+router.put('/accept-request/:id', authUser, acceptRequest);
+router.put('/unfriend/:id', authUser, unfriend);
+router.put('/delete-request/:id', authUser, deleteRequest);
 
 export default router;

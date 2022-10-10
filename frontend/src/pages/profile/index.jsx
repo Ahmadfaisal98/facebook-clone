@@ -23,6 +23,10 @@ export default function Profile({ setVisible }) {
   const [leftHeight, setLeftHeight] = useState();
   const [scrollHeight, setScrollHeight] = useState();
 
+  const check = useMediaQuery({
+    query: '(min-width:901px)',
+  });
+
   const { username } = useParams();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
@@ -50,17 +54,15 @@ export default function Profile({ setVisible }) {
   useEffect(() => {
     setHeight(profileTop.current.clientHeight + 300);
     setLeftHeight(leftSide.current.clientHeight);
+    const getScroll = () => {
+      setScrollHeight(window.pageYOffset);
+    };
+
     window.addEventListener('scroll', getScroll, { passive: true });
     return () => {
-      window.addEventListener('scroll', getScroll, { passive: true });
+      window.removeEventListener('scroll', getScroll, { passive: true });
     };
   }, [scrollHeight]);
-  const check = useMediaQuery({
-    query: '(min-width:901px)',
-  });
-  const getScroll = () => {
-    setScrollHeight(window.pageYOffset);
-  };
 
   return (
     <div className='profile'>
