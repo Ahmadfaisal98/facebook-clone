@@ -7,10 +7,16 @@ import ReactsPopup from './ReactsPopup';
 import CreateComment from './CreateComment';
 import './style.scss';
 import PostMenu from './PostMenu';
+import {
+  useGetReactQuery,
+  useReactPostMutation,
+} from '../../services/reactApi';
 
 export default function Post({ post, user, profile }) {
   const [visible, setVisible] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const { data: react } = useGetReactQuery(post._id);
+  const [reactPost] = useReactPostMutation();
 
   return (
     <div className='post' style={{ width: `${profile ? '100%' : ''}` }}>
@@ -103,8 +109,20 @@ export default function Post({ post, user, profile }) {
 
       <div className='post_infos'>
         <div className='reacts_count'>
-          <div className='reacts_count_imgs'></div>
-          <div className='reacts_count_num'></div>
+          <div className='reacts_count_imgs'>
+            {react?.reacts &&
+              react?.reacts
+                .slice(0, 3)
+                .map(
+                  (value) =>
+                    value.count > 0 && (
+                      <img src={`../../../reacts/${value.react}.svg`} alt='' />
+                    )
+                )}
+          </div>
+          <div className='reacts_count_num'>
+            {react?.total > 0 && react?.total}
+          </div>
         </div>
         <div className='to_right'>
           <div className='comments_count'>13 comments</div>
@@ -112,7 +130,12 @@ export default function Post({ post, user, profile }) {
         </div>
       </div>
       <div className='post_actions'>
-        <ReactsPopup visible={visible} setVisible={setVisible} />
+        <ReactsPopup
+          visible={visible}
+          setVisible={setVisible}
+          postId={post._id}
+          reactPost={reactPost}
+        />
         <div
           className='post_action hover1'
           onMouseOver={() => {
@@ -125,9 +148,42 @@ export default function Post({ post, user, profile }) {
               setVisible(false);
             }, 500);
           }}
+          onClick={() =>
+            reactPost({ postId: post._id, react: react.check || 'like' })
+          }
         >
-          <i className='like_icon'></i>
-          <span>Like</span>
+          {react?.check ? (
+            <img
+              src={`../../../reacts/${react?.check}.svg`}
+              alt=''
+              className='small_react'
+              style={{ width: '18px' }}
+            />
+          ) : (
+            <i className='like_icon'></i>
+          )}
+          <span
+            style={{
+              textTransform: 'capitalize',
+              color: `${
+                react?.check === 'like'
+                  ? '#4267b2'
+                  : react?.check === 'love'
+                  ? '#f63459'
+                  : react?.check === 'haha'
+                  ? '#f7b125'
+                  : react?.check === 'sad'
+                  ? '#f7b125'
+                  : react?.check === 'wow'
+                  ? '#f7b125'
+                  : react?.check === 'angry'
+                  ? '#e4605a'
+                  : ''
+              }`,
+            }}
+          >
+            {react?.check || 'Like'}
+          </span>
         </div>
         <div className='post_action hover1'>
           <i className='comment_icon'></i>
