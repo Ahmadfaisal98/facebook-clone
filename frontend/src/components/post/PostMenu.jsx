@@ -61,7 +61,7 @@ export default function PostMenu({
       {images?.length > 0 && (
         <MenuItem
           icon='download_icon'
-          title='Download Images'
+          title={`Download Image${images?.length > 1 ? 's' : ''}`}
           onClick={downloadImages}
         />
       )}
