@@ -571,3 +571,36 @@ export const deleteRequest = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const savePost = async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const user = await User.findById(req.user.id);
+    const check = user?.savedPosts.find(
+      (post) => post.post.toString() == postId
+    );
+    if (check) {
+      await User.findByIdAndUpdate(req.user.id, {
+        $pull: {
+          savedPosts: {
+            _id: check._id,
+          },
+        },
+      });
+
+      res.status(200).json({ message: 'Already deleted' });
+    } else {
+      await User.findByIdAndUpdate(req.user.id, {
+        $push: {
+          savedPosts: {
+            post: postId,
+            savedAt: new Date(),
+          },
+        },
+      });
+      res.status(201).json({ message: 'Successfully added' });
+    }
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};

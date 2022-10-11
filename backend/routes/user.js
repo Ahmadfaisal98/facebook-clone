@@ -20,6 +20,7 @@ import {
   acceptRequest,
   unfriend,
   deleteRequest,
+  savePost,
 } from '../controllers/user';
 import { authUser } from '../middlewares/auth';
 
@@ -45,5 +46,6 @@ router.put('/unfollow/:id', authUser, unfollow);
 router.put('/accept-request/:id', authUser, acceptRequest);
 router.put('/unfriend/:id', authUser, unfriend);
 router.put('/delete-request/:id', authUser, deleteRequest);
+router.put('/save/:id', authUser, savePost);
 
 export default router;
