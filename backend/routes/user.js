@@ -21,6 +21,10 @@ import {
   unfriend,
   deleteRequest,
   savePost,
+  search,
+  addToSearchHistory,
+  getSearchHistory,
+  removeFromSearch,
 } from '../controllers/user';
 import { authUser } from '../middlewares/auth';
 
@@ -47,5 +51,9 @@ router.put('/accept-request/:id', authUser, acceptRequest);
 router.put('/unfriend/:id', authUser, unfriend);
 router.put('/delete-request/:id', authUser, deleteRequest);
 router.put('/save/:id', authUser, savePost);
+router.post('/search/:searchTerm', authUser, search);
+router.put('/search-history', authUser, addToSearchHistory);
+router.get('/search-history', authUser, getSearchHistory);
+router.delete('/search-history', authUser, removeFromSearch);
 
 export default router;

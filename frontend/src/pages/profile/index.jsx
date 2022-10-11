@@ -35,7 +35,7 @@ export default function Profile({ setVisible }) {
   const user = useSelector((state) => state.user);
 
   const { data: dataPost } = useGetAllPostQuery();
-  const posts = dataPost.filter((e) => e.user._id === user.id);
+  const posts = dataPost?.filter((e) => e.user._id === user.id);
 
   const userName = username || user.username;
   const visitor = userName !== user.username;
