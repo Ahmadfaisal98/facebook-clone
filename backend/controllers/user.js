@@ -604,3 +604,47 @@ export const savePost = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+export const search = async (req, res) => {
+  try {
+    const searchTerm = req.params.searchTerm;
+    const results = await User.find({ $text: { $search: searchTerm } }).select(
+      'first_name last_name username picture'
+    );
+    res.status(200).json(results);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+export const addToSearchHistory = async (req, res) => {
+  try {
+    const { searchUser } = req.body;
+    const search = {
+      user: searchUser,
+      createdAt: new Date(),
+    };
+    const user = await User.findById(req.user.id);
+    const check = user.search.find((x) => x.user.toString() === searchUser);
+    if (check) {
+      await User.updateOne(
+        {
+          _id: req.user.id,
+          'search._id': check._id,
+        },
+        {
+          $set: { 'search.$.createdAt': new Date() },
+        }
+      );
+      res.status(200).json({ message: 'Update search user' });
+    } else {
+      await User.findByIdAndUpdate(req.user.id, {
+        $push: {
+          search,
+        },
+      });
+      res.status(200).json({ message: 'Add search user' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
