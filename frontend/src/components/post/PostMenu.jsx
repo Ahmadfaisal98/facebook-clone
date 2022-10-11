@@ -1,17 +1,20 @@
 import { useRef } from 'react';
+import { saveAs } from 'file-saver';
+
 import MenuItem from './MenuItem';
 import useClickOutside from '../../hooks/useClickOutside';
 import {
   useProfileUserQuery,
   useSavePostMutation,
 } from '../../services/userApi';
+
 export default function PostMenu({
   postUserId,
   userId,
-  imagesLength,
   setShowMenu,
   postId,
   user,
+  images,
 }) {
   const menu = useRef(null);
   const isMyPost = postUserId === userId;
@@ -22,6 +25,12 @@ export default function PostMenu({
   const isSaved = dataPost?.savedPosts.find((v) => v.post === postId);
 
   useClickOutside(menu, () => setShowMenu(false));
+
+  const downloadImages = async () => {
+    images.forEach((img) => {
+      saveAs(img.url, 'image.jpg');
+    });
+  };
 
   return (
     <ul className='post_menu' ref={menu}>
@@ -49,8 +58,14 @@ export default function PostMenu({
           title='Turn on notifications for this post'
         />
       )}
-      {imagesLength > 0 && <MenuItem icon='download_icon' title='Download' />}
-      {imagesLength > 0 && (
+      {images?.length > 0 && (
+        <MenuItem
+          icon='download_icon'
+          title='Download Images'
+          onClick={downloadImages}
+        />
+      )}
+      {images?.length > 0 && (
         <MenuItem icon='fullscreen_icon' title='Enter Fullscreen' />
       )}
       {isMyPost && (
