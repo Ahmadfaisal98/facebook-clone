@@ -67,3 +67,12 @@ export const comment = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+export const deletePost = async (req, res) => {
+  try {
+    await Post.findByIdAndRemove(req.params.id);
+    res.status(200).json({ status: 'Successfully delete the post' });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
