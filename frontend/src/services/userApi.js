@@ -12,7 +12,7 @@ export const userApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ['profile', 'cover'],
+  tagTypes: ['profile', 'cover', 'search'],
   endpoints: (builder) => ({
     register: builder.mutation({
       query: (body) => ({
@@ -156,6 +156,34 @@ export const userApi = createApi({
       }),
       invalidatesTags: ['profile'],
     }),
+    searchUser: builder.mutation({
+      query: (id) => ({
+        url: `/search/${id}`,
+        method: 'POST',
+      }),
+    }),
+    addSearchHistory: builder.mutation({
+      query: (body) => ({
+        url: `/search-history`,
+        method: 'PUT',
+        body,
+      }),
+      invalidatesTags: ['search'],
+    }),
+    deleteSearchHistory: builder.mutation({
+      query: (body) => ({
+        url: `/search-history`,
+        method: 'DELETE',
+        body,
+      }),
+      invalidatesTags: ['search'],
+    }),
+    getSearchHistory: builder.query({
+      query: (body) => ({
+        url: `/search-history`,
+      }),
+      providesTags: ['search'],
+    }),
   }),
 });
 
@@ -180,4 +208,8 @@ export const {
   useUnFriendMutation,
   useDeleteRequestFriendMutation,
   useSavePostMutation,
+  useSearchUserMutation,
+  useAddSearchHistoryMutation,
+  useGetSearchHistoryQuery,
+  useDeleteSearchHistoryMutation,
 } = userApi;
