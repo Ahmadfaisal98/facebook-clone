@@ -7,6 +7,7 @@ import {
   useProfileUserQuery,
   useSavePostMutation,
 } from '../../services/userApi';
+import { useDeletePostMutation } from '../../services/postApi';
 
 export default function PostMenu({
   postUserId,
@@ -21,6 +22,7 @@ export default function PostMenu({
 
   const [savePost] = useSavePostMutation();
   const { data: dataPost } = useProfileUserQuery(user.username);
+  const [deletePost] = useDeletePostMutation();
 
   const isSaved = dataPost?.savedPosts.find((v) => v.post === postId);
 
@@ -35,21 +37,21 @@ export default function PostMenu({
   return (
     <ul className='post_menu' ref={menu}>
       {isMyPost && <MenuItem icon='pin_icon' title='Pin Post' />}
-      <div onClick={() => savePost(postId)}>
-        {isSaved ? (
-          <MenuItem
-            icon='save_icon'
-            title='Unsave Post'
-            subtitle='Remove this from your saved items.'
-          />
-        ) : (
-          <MenuItem
-            icon='save_icon'
-            title='Save Post'
-            subtitle='Add this to your saved items.'
-          />
-        )}
-      </div>
+      {isSaved ? (
+        <MenuItem
+          icon='save_icon'
+          title='Unsave Post'
+          subtitle='Remove this from your saved items.'
+          onClick={() => savePost(postId)}
+        />
+      ) : (
+        <MenuItem
+          icon='save_icon'
+          title='Save Post'
+          subtitle='Add this to your saved items.'
+          onClick={() => savePost(postId)}
+        />
+      )}
       <div className='line'></div>
       {isMyPost && <MenuItem icon='edit_icon' title='Edit Post' />}
       {!isMyPost && (
@@ -90,6 +92,7 @@ export default function PostMenu({
           icon='trash_icon'
           title='Move to trash'
           subtitle='items in your trash are deleted after 30 days'
+          onClick={() => deletePost(postId)}
         />
       )}
       {!isMyPost && <div className='line'></div>}
