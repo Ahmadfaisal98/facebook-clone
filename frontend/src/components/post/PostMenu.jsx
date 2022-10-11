@@ -1,25 +1,46 @@
 import { useRef } from 'react';
 import MenuItem from './MenuItem';
 import useClickOutside from '../../hooks/useClickOutside';
+import {
+  useProfileUserQuery,
+  useSavePostMutation,
+} from '../../services/userApi';
 export default function PostMenu({
   postUserId,
   userId,
   imagesLength,
   setShowMenu,
+  postId,
+  user,
 }) {
   const menu = useRef(null);
   const isMyPost = postUserId === userId;
+
+  const [savePost] = useSavePostMutation();
+  const { data: dataPost } = useProfileUserQuery(user.username);
+
+  const isSaved = dataPost?.savedPosts.find((v) => v.post === postId);
 
   useClickOutside(menu, () => setShowMenu(false));
 
   return (
     <ul className='post_menu' ref={menu}>
       {isMyPost && <MenuItem icon='pin_icon' title='Pin Post' />}
-      <MenuItem
-        icon='save_icon'
-        title='Save Post'
-        subtitle='Add this to your saved items.'
-      />
+      <div onClick={() => savePost(postId)}>
+        {isSaved ? (
+          <MenuItem
+            icon='save_icon'
+            title='Unsave Post'
+            subtitle='Remove this from your saved items.'
+          />
+        ) : (
+          <MenuItem
+            icon='save_icon'
+            title='Save Post'
+            subtitle='Add this to your saved items.'
+          />
+        )}
+      </div>
       <div className='line'></div>
       {isMyPost && <MenuItem icon='edit_icon' title='Edit Post' />}
       {!isMyPost && (

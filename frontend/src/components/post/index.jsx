@@ -227,8 +227,10 @@ export default function Post({ post, user, profile }) {
         <PostMenu
           userId={user.id}
           postUserId={post.user._id}
+          postId={post._id}
           imagesLength={post?.images?.length}
           setShowMenu={setShowMenu}
+          user={user}
         />
       )}
     </div>
