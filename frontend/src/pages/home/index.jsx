@@ -13,12 +13,12 @@ import './style.scss';
 
 export default function Home({ setVisible }) {
   const user = useSelector((state) => state.user);
-  const { data: posts } = useGetAllPostQuery();
+  const { data: posts, isLoading } = useGetAllPostQuery();
   const middle = useRef(null);
   const [height, setHeight] = useState();
   useEffect(() => {
     setHeight(middle.current.clientHeight);
-  }, [middle]);
+  }, [middle, isLoading]);
   return (
     <div className='home' style={{ height: `${height + 150}px` }}>
       <Header page='home' />

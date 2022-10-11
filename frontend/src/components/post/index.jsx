@@ -70,7 +70,7 @@ export default function Post({ post, user, profile }) {
       ) : post.type === null ? (
         <>
           <div className='post_text'>{post.text}</div>
-          {post.images && post.images.length && (
+          {post.images?.length > 0 && (
             <div
               className={
                 post.images.length === 1
@@ -227,8 +227,10 @@ export default function Post({ post, user, profile }) {
         <PostMenu
           userId={user.id}
           postUserId={post.user._id}
-          imagesLength={post?.images?.length}
+          postId={post._id}
           setShowMenu={setShowMenu}
+          user={user}
+          images={post.images}
         />
       )}
     </div>

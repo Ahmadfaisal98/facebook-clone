@@ -4,19 +4,22 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
 
 import Header from '../../components/header';
+import CreatePost from '../../components/createPost';
+import Post from '../../components/post';
+import Intro from '../../components/intro';
+
 import Cover from './Cover';
 import ProfilePictureInfos from './ProfilePictureInfos';
 import ProfileMenu from './ProfileMenu';
 import PplYouMayKnow from './PplYouMayKnow';
-import CreatePost from '../../components/createPost';
 import GridPosts from './GridPosts';
-import Post from '../../components/post';
 import Photos from './Photos';
 import Friends from './Friends';
+
 import { useProfileUserQuery } from '../../services/userApi';
 import { useListImagesQuery } from '../../services/uploadApi';
+import { useGetAllPostQuery } from '../../services/postApi';
 import './style.scss';
-import Intro from '../../components/intro';
 
 export default function Profile({ setVisible }) {
   const [height, setHeight] = useState();
@@ -30,6 +33,9 @@ export default function Profile({ setVisible }) {
   const { username } = useParams();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
+
+  const { data: dataPost } = useGetAllPostQuery();
+  const posts = dataPost.filter((e) => e.user._id === user.id);
 
   const userName = username || user.username;
   const visitor = userName !== user.username;
@@ -124,8 +130,8 @@ export default function Profile({ setVisible }) {
 
                 <GridPosts />
                 <div className='posts'>
-                  {profile?.posts?.length > 0 ? (
-                    profile?.posts.map((post) => (
+                  {posts?.length > 0 ? (
+                    posts.map((post) => (
                       <Post post={post} user={user} key={post._id} profile />
                     ))
                   ) : (

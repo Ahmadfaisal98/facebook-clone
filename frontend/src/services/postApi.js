@@ -12,7 +12,7 @@ export const postApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ['post'],
+  tagTypes: ['post', 'profile'],
   endpoints: (builder) => ({
     createPost: builder.mutation({
       query: (body) => ({
@@ -20,11 +20,13 @@ export const postApi = createApi({
         method: 'POST',
         body,
       }),
-      invalidatesTags: ['post'],
+      invalidatesTags: ['post', 'profile'],
     }),
     getAllPost: builder.query({
-      query: () => ({
-        url: `/get-all`,
+      query: (query) => ({
+        url: `/get-all?page=${query?.page || 1}&pageSize=${
+          query?.pageSize || 10
+        }`,
       }),
       providesTags: ['post'],
     }),
@@ -36,6 +38,13 @@ export const postApi = createApi({
       }),
       invalidatesTags: ['post'],
     }),
+    deletePost: builder.mutation({
+      query: (id) => ({
+        url: `/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['post'],
+    }),
   }),
 });
 
@@ -43,4 +52,5 @@ export const {
   useCreatePostMutation,
   useGetAllPostQuery,
   useUpdateCommentMutation,
+  useDeletePostMutation,
 } = postApi;

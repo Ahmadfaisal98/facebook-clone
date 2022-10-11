@@ -149,6 +149,13 @@ export const userApi = createApi({
       }),
       invalidatesTags: ['profile'],
     }),
+    savePost: builder.mutation({
+      query: (id) => ({
+        url: `/save/${id}`,
+        method: 'PUT',
+      }),
+      invalidatesTags: ['profile'],
+    }),
   }),
 });
 
@@ -172,4 +179,5 @@ export const {
   useAcceptRequestFriendMutation,
   useUnFriendMutation,
   useDeleteRequestFriendMutation,
+  useSavePostMutation,
 } = userApi;
