@@ -25,6 +25,7 @@ import {
   addToSearchHistory,
   getSearchHistory,
   removeFromSearch,
+  getFriendsPageInfos,
 } from '../controllers/user';
 import { authUser } from '../middlewares/auth';
 
@@ -55,5 +56,6 @@ router.post('/search/:searchTerm', authUser, search);
 router.put('/search-history', authUser, addToSearchHistory);
 router.get('/search-history', authUser, getSearchHistory);
 router.delete('/search-history', authUser, removeFromSearch);
+router.get('/friends', authUser, getFriendsPageInfos);
 
 export default router;
