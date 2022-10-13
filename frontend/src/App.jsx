@@ -32,11 +32,8 @@ function App() {
             element={<Profile setVisible={setVisible} />}
             exact
           />
-          <Route
-            path='/friends'
-            element={<Friends setVisible={setVisible} />}
-            exact
-          />
+          <Route path='/friends' element={<Friends />} exact />
+          <Route path='/friends/:type' element={<Friends />} exact />
           <Route path='/' element={<Home setVisible={setVisible} />} exact />
         </Route>
         <Route element={<NotLoggedInRoutes />}>

@@ -179,10 +179,16 @@ export const userApi = createApi({
       invalidatesTags: ['search'],
     }),
     getSearchHistory: builder.query({
-      query: (body) => ({
+      query: () => ({
         url: `/search-history`,
       }),
       providesTags: ['search'],
+    }),
+    getFriends: builder.query({
+      query: () => ({
+        url: `/friends`,
+      }),
+      providesTags: ['profile'],
     }),
   }),
 });
@@ -212,4 +218,5 @@ export const {
   useAddSearchHistoryMutation,
   useGetSearchHistoryQuery,
   useDeleteSearchHistoryMutation,
+  useGetFriendsQuery,
 } = userApi;
