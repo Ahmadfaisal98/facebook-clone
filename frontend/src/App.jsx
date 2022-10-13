@@ -10,6 +10,7 @@ import NotLoggedInRoutes from './routes/NotLoggedInRoutes';
 import Activate from './pages/home/activate';
 import Reset from './pages/reset';
 import CreatePostPopup from './components/createPostPopup';
+import Friends from './pages/friends';
 
 function App() {
   const [visible, setVisible] = useState(false);
@@ -31,6 +32,8 @@ function App() {
             element={<Profile setVisible={setVisible} />}
             exact
           />
+          <Route path='/friends' element={<Friends />} exact />
+          <Route path='/friends/:type' element={<Friends />} exact />
           <Route path='/' element={<Home setVisible={setVisible} />} exact />
         </Route>
         <Route element={<NotLoggedInRoutes />}>

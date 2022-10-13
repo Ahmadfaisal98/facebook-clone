@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import mongoose from 'mongoose';
 
 import User from '../models/User';
 import Code from '../models/Code';
@@ -670,6 +671,25 @@ export const removeFromSearch = async (req, res) => {
       { $pull: { search: { user: searchUser } } }
     );
     res.status(200).json({ message: 'Successfully delete search user' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getFriendsPageInfos = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id)
+      .select('friends requests')
+      .populate('friends', 'first_name last_name picture username')
+      .populate('requests', 'first_name last_name picture username');
+    const sentRequests = await User.find({
+      requests: mongoose.Types.ObjectId(req.user.id),
+    }).select('first_name last_name picture username');
+    res.status(200).json({
+      friends: user.friends,
+      requests: user.requests,
+      sentRequests,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
