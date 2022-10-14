@@ -164,6 +164,7 @@
     gap: 4px;
     & input {
       padding-left: 4px;
+      color: var(--color-primary);
       &::placeholder {
         transform: translateY(-2px);
       }

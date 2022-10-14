@@ -52,6 +52,9 @@
     font-size: 22px;
     background-repeat: no-repeat;
     background-size: cover;
+    &_text {
+      color: #000;
+    }
   }
   &_text {
     padding: 0 15px 10px 15px;

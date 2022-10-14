@@ -17,7 +17,7 @@ function App() {
   const user = useSelector((state) => state.user);
 
   return (
-    <div>
+    <div className={user.theme}>
       {visible && <CreatePostPopup user={user} setVisible={setVisible} />}
       <Routes>
         <Route path='/activate/:token' element={<Activate />} exact />

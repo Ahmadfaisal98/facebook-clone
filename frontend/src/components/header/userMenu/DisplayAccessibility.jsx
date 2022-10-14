@@ -1,4 +1,10 @@
+import { useDispatch, useSelector } from 'react-redux';
+import { updateUser } from '../../../features/userSlice';
+
 export default function DisplayAccessibility({ setVisible }) {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+
   return (
     <div className='absolute_wrap'>
       <div className='absolute_wrap_header'>
@@ -24,13 +30,33 @@ export default function DisplayAccessibility({ setVisible }) {
           </span>
         </div>
       </div>
-      <label htmlFor='darkOff' className='hover1'>
+      <label
+        htmlFor='darkOff'
+        className='hover1'
+        onClick={() => dispatch(updateUser({ theme: 'light' }))}
+      >
         <span>Off</span>
-        <input type='radio' name='dark' id='darkOff' />
+        <input
+          type='radio'
+          name='dark'
+          id='darkOff'
+          readOnly
+          checked={user.theme === 'light'}
+        />
       </label>
-      <label htmlFor='darkOn' className='hover1'>
+      <label
+        htmlFor='darkOn'
+        className='hover1'
+        onClick={() => dispatch(updateUser({ theme: 'dark' }))}
+      >
         <span>On</span>
-        <input type='radio' name='dark' id='darkOn' />
+        <input
+          type='radio'
+          readOnly
+          name='dark'
+          id='darkOn'
+          checked={user.theme === 'dark'}
+        />
       </label>
       <div className='mmenu_main'>
         <div className='small_circle' style={{ width: '50px' }}>
