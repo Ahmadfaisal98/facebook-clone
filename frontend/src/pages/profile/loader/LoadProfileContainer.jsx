@@ -63,7 +63,7 @@ export default function LoadProfileContainer({ visitor }) {
             </div>
           </div>
         </div>
-        <div className={`friendship ${!visitor && 'fix'}`}>
+        <div className={`friendship ${!visitor && 'row'}`}>
           <Skeleton
             height='36px'
             width={120}

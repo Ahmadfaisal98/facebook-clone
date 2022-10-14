@@ -5,7 +5,7 @@ export default function LoadProfileLeft() {
     <>
       <div className='profile_card'>
         <div className='profile_card_header'>Intro</div>
-        <div className='sekelton_loader'>
+        <div className='skeleton_loader'>
           <HashLoader color='#1876f2' />
         </div>
       </div>
@@ -14,7 +14,7 @@ export default function LoadProfileLeft() {
           Photos
           <div className='profile_header_link'>See all photos</div>
         </div>
-        <div className='sekelton_loader'>
+        <div className='skeleton_loader'>
           <HashLoader color='#1876f2' />
         </div>
       </div>
@@ -23,7 +23,7 @@ export default function LoadProfileLeft() {
           Friends
           <div className='profile_header_link'>See all friends</div>
         </div>
-        <div className='sekelton_loader'>
+        <div className='skeleton_loader'>
           <HashLoader color='#1876f2' />
         </div>
       </div>

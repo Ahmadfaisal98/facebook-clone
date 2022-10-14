@@ -152,7 +152,7 @@ export default function Profile({ setVisible }) {
 
                 <GridPosts />
                 {isLoadProfile ? (
-                  <div className='sekelton_loader'>
+                  <div className='skeleton_loader'>
                     <HashLoader color='#1876f2' />
                   </div>
                 ) : (
