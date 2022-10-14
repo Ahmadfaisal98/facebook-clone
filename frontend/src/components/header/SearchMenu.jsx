@@ -22,8 +22,6 @@ export default function SearchMenu({ color, setShowSearchMenu }) {
 
   const searchHistory = isSuccess ? [...dataSearchHistory] : [];
 
-  console.log(searchHistory);
-
   const menu = useRef(null);
   const input = useRef(null);
 
