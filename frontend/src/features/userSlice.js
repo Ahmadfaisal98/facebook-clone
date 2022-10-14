@@ -22,6 +22,7 @@ const initialState = {
   bDay: 0,
   gender: '',
   verified: verified || false,
+  theme: 'light',
 };
 
 const userSlice = createSlice({
