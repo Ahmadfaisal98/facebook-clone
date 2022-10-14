@@ -24,6 +24,9 @@
   font-weight: 700;
   padding: 14px 15px 17px 15px;
   border-bottom: 1px solid var(--bg-third);
+  span {
+    color: var(--color-primary);
+  }
 }
 
 .box_profile {
@@ -45,6 +48,7 @@
 
 .box_col {
   transform: translateY(-7px);
+  color: var(--color-primary);
 }
 
 .box_privacy {
@@ -87,7 +91,7 @@
   font-family: inherit;
   font-size: 24px;
   background: var(--bg-primary);
-  color: var(--color-primary);
+  color: #000;
 }
 
 .flex_center textarea {
@@ -131,6 +135,7 @@
   width: 50%;
   font-weight: 600;
   font-size: 14px;
+  color: var(--color-primary);
 }
 .post_header_right {
   width: 35px;

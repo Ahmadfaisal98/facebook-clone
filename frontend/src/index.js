@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 
 import './index.scss';
 import './styles/icons/icons.scss';
+import './styles/dark.scss';
 import App from './App';
 import { store, persistor } from './app/store';
 import { PersistGate } from 'redux-persist/integration/react';

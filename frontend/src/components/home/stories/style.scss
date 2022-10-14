@@ -12,7 +12,7 @@
     width: 100%;
     border-radius: 10px;
     overflow: hidden;
-    background: #fff;
+    background: var(--bg-primary);
     cursor: pointer;
     box-shadow: 0 1px 2px var(--shadow-1);
   }
@@ -86,7 +86,7 @@
     }
   }
   &_create_text {
-    color: #000;
+    color: var(--color-primary);
     position: absolute;
     left: 20%;
     top: 87%;
