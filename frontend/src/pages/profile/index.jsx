@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
+import { HashLoader } from 'react-spinners';
 
 import Header from '../../components/header';
 import CreatePost from '../../components/createPost';
@@ -15,6 +16,8 @@ import PplYouMayKnow from './PplYouMayKnow';
 import GridPosts from './GridPosts';
 import Photos from './Photos';
 import Friends from './Friends';
+import LoadProfileLeft from './loader/LoadProfileLeft';
+import LoadProfileContainer from './loader/LoadProfileContainer';
 
 import { useProfileUserQuery } from '../../services/userApi';
 import { useListImagesQuery } from '../../services/uploadApi';
@@ -49,7 +52,11 @@ export default function Profile({ setVisible }) {
     sort: 'desc',
   };
   const { data: photos } = useListImagesQuery(payload);
-  const { data: profile, isError } = useProfileUserQuery(userName);
+  const {
+    data: profile,
+    isError,
+    isLoading: isLoadProfile,
+  } = useProfileUserQuery(userName);
 
   useEffect(() => {
     if (isError) {
@@ -75,17 +82,23 @@ export default function Profile({ setVisible }) {
       <Header page='profile' />
       <div className='profile_top' ref={profileTop}>
         <div className='profile_container'>
-          <Cover
-            cover={profile?.cover}
-            visitor={visitor}
-            photos={photos?.resources}
-          />
-          <ProfilePictureInfos
-            profile={profile}
-            visitor={visitor}
-            photos={photos?.resources}
-          />
-          <ProfileMenu />
+          {isLoadProfile ? (
+            <LoadProfileContainer visitor={visitor} />
+          ) : (
+            <>
+              <Cover
+                cover={profile?.cover}
+                visitor={visitor}
+                photos={photos?.resources}
+              />
+              <ProfilePictureInfos
+                profile={profile}
+                visitor={visitor}
+                photos={photos?.resources}
+              />
+              <ProfileMenu />
+            </>
+          )}
         </div>
       </div>
       <div className='profile_bottom'>
@@ -94,18 +107,27 @@ export default function Profile({ setVisible }) {
             <PplYouMayKnow />
             <div
               className={`profile_grid ${
-                check && scrollHeight >= height && leftHeight > 1000
+                check &&
+                scrollHeight >= height &&
+                leftHeight > window.innerHeight
                   ? 'scrollFixed showLess'
                   : check &&
                     scrollHeight >= height &&
-                    leftHeight < 1000 &&
+                    leftHeight < window.innerHeight &&
                     'scrollFixed showMore'
               }`}
             >
               <div className='profile_left' ref={leftSide}>
-                <Intro details={profile?.details} visitor={visitor} />
-                <Photos username={userName} photos={photos} />
-                <Friends friends={profile?.friends} />
+                {isLoadProfile ? (
+                  <LoadProfileLeft />
+                ) : (
+                  <>
+                    <Intro details={profile?.details} visitor={visitor} />
+                    <Photos username={userName} photos={photos} />
+                    <Friends friends={profile?.friends} />
+                  </>
+                )}
+
                 <div className='relative_fb_copyright'>
                   <Link to='/'>Privacy </Link>
                   <span>. </span>
@@ -129,15 +151,21 @@ export default function Profile({ setVisible }) {
                 )}
 
                 <GridPosts />
-                <div className='posts'>
-                  {posts?.length > 0 ? (
-                    posts.map((post) => (
-                      <Post post={post} user={user} key={post._id} profile />
-                    ))
-                  ) : (
-                    <div className='no_posts'>No posts available</div>
-                  )}
-                </div>
+                {isLoadProfile ? (
+                  <div className='sekelton_loader'>
+                    <HashLoader color='#1876f2' />
+                  </div>
+                ) : (
+                  <div className='posts'>
+                    {profile?.posts?.length > 0 ? (
+                      posts.map((post) => (
+                        <Post post={post} user={user} key={post._id} profile />
+                      ))
+                    ) : (
+                      <div className='no_posts'>No posts available</div>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           </div>
