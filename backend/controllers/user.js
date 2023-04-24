@@ -610,7 +610,7 @@ export const search = async (req, res) => {
   try {
     const searchTerm = req.params.searchTerm;
     const results = await User.find({ $text: { $search: searchTerm } }).select(
-      'first_name last_name username picture'
+      'first_name last_name username'
     );
     res.status(200).json(results);
   } catch (error) {

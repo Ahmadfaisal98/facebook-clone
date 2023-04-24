@@ -167,4 +167,6 @@ const userSchema = mongoose.Schema(
 
 userSchema.plugin(uniqueValidator);
 
+userSchema.index({ first_name: 'text', last_name: 'text', username: 'text' });
+
 export default mongoose.model('User', userSchema);

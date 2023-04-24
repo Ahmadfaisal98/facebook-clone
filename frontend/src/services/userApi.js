@@ -6,8 +6,9 @@ export const userApi = createApi({
     baseUrl: process.env.REACT_APP_BASE_URL + '/user',
     prepareHeaders: (headers) => {
       const token = localStorage.getItem('token');
+      console.log(token);
       if (token) {
-        headers.set('authorization', `Bearer ${token}`);
+        headers.set('Authorization', `Bearer ${token}`);
       }
       return headers;
     },
